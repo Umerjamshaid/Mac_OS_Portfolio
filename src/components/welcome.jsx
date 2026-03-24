@@ -21,7 +21,7 @@ const FONT_WEIGHTS = {
 };
 
 const setupTextHover = (Container, type) => {
-    if (!Container) return;
+    if (!Container) return () => {};
 
     const letters = Container.querySelectorAll("span");
     const { min, max, default: base } = FONT_WEIGHTS[type];
@@ -68,8 +68,8 @@ export const Welcome = () => {
         const cleanupSubtitle = setupTextHover(subtitleRef.current, "subtitle");
 
         return () => {
-            cleanupTitle();
-            cleanupSubtitle();
+            cleanupTitle?.();
+            cleanupSubtitle?.();
         };
     }, []);
 
