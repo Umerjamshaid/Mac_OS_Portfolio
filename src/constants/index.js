@@ -105,7 +105,7 @@ const techStack = [
     items: ["Flutter", "Dart"],
   },
   {
-    category: "Backend ",
+    category: "Backend",
     items: ["Python", "REST APIs"],
   },
   {
