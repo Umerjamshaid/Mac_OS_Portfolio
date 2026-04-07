@@ -1043,6 +1043,592 @@ export const ResumeQR = ({ resumeLink }) => (
 
 ---
 
+## 11. GSAP Animation Guide 🎬
+
+### Overview
+GSAP (GreenSock Animation Platform) is perfect for animating the interactive elements throughout your portfolio. Here are all the opportunities for adding smooth, professional animations.
+
+---
+
+### 11.1 Dark Mode & Theme Transitions
+
+**Why:** Smooth color transitions feel polished and professional.
+
+```javascript
+// Animate entire theme transition
+gsap.to('body', {
+  backgroundColor: theme === 'dark' ? '#1d1d1f' : '#ffffff',
+  color: theme === 'dark' ? '#f5f5f7' : '#000000',
+  duration: 0.6,
+  ease: 'power2.inOut'
+});
+
+// Animate individual window backgrounds with stagger
+gsap.to('.window', {
+  backgroundColor: theme === 'dark' ? '#2a2a2d' : '#f5f5f7',
+  duration: 0.6,
+  stagger: 0.1 // Each window animates 0.1s after the previous
+});
+
+// Animate theme button selection
+gsap.to('.theme-button.active', {
+  scale: 1.1,
+  backgroundColor: '#0071e3',
+  boxShadow: '0 0 10px rgba(0,113,227,0.5)',
+  duration: 0.3,
+  ease: 'back.out'
+});
+```
+
+**Priority:** ⭐⭐⭐⭐⭐ HIGH - Visual polish on frequent interaction
+
+---
+
+### 11.2 Window Maximizing & Resizing
+
+**Why:** Smooth window transformations enhance UX and feel native.
+
+```javascript
+// Smooth window maximize animation
+gsap.to(windowRef.current, {
+  width: isMaximized ? '100vw' : 600,
+  height: isMaximized ? '100vh' : 400,
+  x: isMaximized ? 0 : windowPos.x,
+  y: isMaximized ? 0 : windowPos.y,
+  duration: 0.4,
+  ease: 'power2.inOut'
+});
+
+// Cascade multiple windows opening
+gsap.fromTo('.window', 
+  { opacity: 0, scale: 0.8, y: 100 },
+  { 
+    opacity: 1, 
+    scale: 1, 
+    y: 0,
+    duration: 0.4,
+    stagger: 0.1,
+    ease: 'back.out'
+  }
+);
+```
+
+**Priority:** ⭐⭐⭐⭐⭐ HIGH - Core interaction animation
+
+---
+
+### 11.3 Window Snap to Edges
+
+**Why:** Bouncy snap effect feels responsive and satisfying.
+
+```javascript
+// Animate window snap with bounce
+gsap.to(windowRef.current, {
+  x: snappedPosition.x,
+  y: snappedPosition.y,
+  duration: 0.3,
+  ease: 'back.out' // Bouncy snap effect
+});
+
+// Stagger snap if multiple windows
+gsap.to('.window.snapping', {
+  x: (index, target) => calculateSnappedX(target),
+  y: (index, target) => calculateSnappedY(target),
+  duration: 0.3,
+  stagger: 0.05,
+  ease: 'back.out'
+});
+```
+
+**Priority:** ⭐⭐⭐⭐ MEDIUM - Nice-to-have UX enhancement
+
+---
+
+### 11.4 Spotlight Search Animation
+
+**Why:** Modal entrance/exit animations create visual hierarchy.
+
+```javascript
+// Search modal appearance
+gsap.fromTo('.spotlight-container', 
+  { opacity: 0, scale: 0.9, backdropFilter: 'blur(0px)' },
+  { opacity: 1, scale: 1, backdropFilter: 'blur(10px)', duration: 0.3, ease: 'back.out' }
+);
+
+// Animate search results list
+gsap.to('.search-result', {
+  opacity: 1,
+  y: 0,
+  duration: 0.3,
+  stagger: 0.05,
+  ease: 'power2.out'
+});
+
+// Search modal exit
+gsap.to('.spotlight-container', {
+  opacity: 0,
+  scale: 0.9,
+  duration: 0.2,
+  ease: 'back.in'
+});
+```
+
+**Priority:** ⭐⭐⭐⭐ MEDIUM - Frequent interaction
+
+---
+
+### 11.5 Notification Center Animations
+
+**Why:** Notifications need to grab attention then fade smoothly.
+
+```javascript
+// Slide in notification
+gsap.fromTo('.notification', 
+  { x: 400, opacity: 0 },
+  { x: 0, opacity: 1, duration: 0.4, ease: 'back.out' }
+);
+
+// Pulse effect while visible
+gsap.to('.notification', {
+  duration: 0.5,
+  repeat: 2,
+  yoyo: true,
+  boxShadow: '0 0 20px rgba(0,113,227,0.8)',
+  delay: 0.4
+});
+
+// Slide out notification
+gsap.to('.notification', {
+  x: 400,
+  opacity: 0,
+  duration: 0.4,
+  delay: 4.5, // Show for 5 seconds total
+  ease: 'back.in'
+});
+```
+
+**Priority:** ⭐⭐⭐⭐ MEDIUM - Important UX feedback
+
+---
+
+### 11.6 Keyboard Shortcuts Modal
+
+**Why:** Modal animations create a polished, focused experience.
+
+```javascript
+// Shortcuts modal entrance
+gsap.fromTo('.shortcuts-modal',
+  { opacity: 0, y: -50 },
+  { opacity: 1, y: 0, duration: 0.4, ease: 'back.out' }
+);
+
+// Stagger animate each shortcut item
+gsap.to('.shortcut-item', {
+  opacity: 1,
+  x: 0,
+  duration: 0.3,
+  stagger: 0.08,
+  ease: 'power2.out'
+});
+
+// Shortcuts modal exit
+gsap.to('.shortcuts-modal', {
+  opacity: 0,
+  y: -50,
+  duration: 0.2,
+  ease: 'back.in'
+});
+```
+
+**Priority:** ⭐⭐⭐ NICE-TO-HAVE - Occasional interaction
+
+---
+
+### 11.7 Animated Wallpaper with GSAP
+
+**Why:** Mouse-reactive animations create an interactive feel.
+
+```javascript
+// Parallax wallpaper effect on mouse movement
+document.addEventListener('mousemove', (e) => {
+  gsap.to('.wallpaper', {
+    x: (e.clientX - window.innerWidth / 2) * 0.05,
+    y: (e.clientY - window.innerHeight / 2) * 0.05,
+    duration: 0.5,
+    ease: 'power1.out',
+    overwrite: 'auto'
+  });
+});
+
+// Animate particles (alternative to canvas)
+gsap.to('.particle', {
+  x: 'random(-1000, 1000)',
+  y: 'random(-1000, 1000)',
+  opacity: 'random(0, 1)',
+  duration: 'random(2, 5)',
+  repeat: -1,
+  ease: 'none'
+});
+
+// Wave effect animation
+Array.from(document.querySelectorAll('.wave')).forEach((wave, index) => {
+  gsap.to(wave, {
+    y: Math.sin(index) * 20,
+    duration: 2 + index * 0.5,
+    repeat: -1,
+    yoyo: true,
+    ease: 'sine.inOut'
+  });
+});
+```
+
+**Priority:** ⭐⭐⭐ NICE-TO-HAVE - Visual polish
+
+---
+
+### 11.8 Performance Analytics Dashboard
+
+**Why:** Animated metrics are more engaging than static numbers.
+
+```javascript
+// Animate progress bars for metrics
+gsap.to('.metric-bar', {
+  width: (index, target) => {
+    const endValue = target.getAttribute('data-value');
+    return endValue + '%';
+  },
+  duration: 1,
+  stagger: 0.1,
+  ease: 'power2.out'
+});
+
+// Animate counter numbers
+gsap.to('.metric-number', {
+  textContent: (index, target) => {
+    return parseInt(target.getAttribute('data-end-value'));
+  },
+  duration: 1,
+  snap: { textContent: 1 },
+  stagger: 0.1,
+  ease: 'power2.out'
+});
+
+// Scale up bars on completion
+gsap.to('.metric-bar', {
+  scaleY: 1.05,
+  duration: 0.3,
+  delay: 1.2,
+  stagger: 0.1,
+  yoyo: true,
+  repeat: 1,
+  ease: 'back.out'
+});
+```
+
+**Priority:** ⭐⭐⭐ NICE-TO-HAVE - Future feature
+
+---
+
+### 11.9 Zen Mode Toggle
+
+**Why:** Smooth UI fade-out creates focused, immersive experience.
+
+```javascript
+// Fade out UI elements for Zen mode
+gsap.to('.navbar, .dock', {
+  opacity: 0,
+  y: -30,
+  duration: 0.6,
+  ease: 'power2.inOut',
+  pointerEvents: 'none'
+});
+
+// Fade out non-active windows
+gsap.to('.window:not(.active)', {
+  opacity: 0.1,
+  duration: 0.6,
+  ease: 'power2.inOut',
+  pointerEvents: 'none'
+});
+
+// Expand active window
+gsap.to('.window.active', {
+  width: '90vw',
+  height: '90vh',
+  duration: 0.6,
+  ease: 'power2.inOut'
+});
+
+// Exit Zen mode - reverse animations
+gsap.to('.navbar, .dock', {
+  opacity: 1,
+  y: 0,
+  duration: 0.6,
+  ease: 'power2.inOut',
+  pointerEvents: 'auto'
+});
+```
+
+**Priority:** ⭐⭐⭐⭐ MEDIUM - Nice focused mode
+
+---
+
+### 11.10 Share Button Animations
+
+**Why:** Interactive buttons feel responsive and engaging.
+
+```javascript
+// Scale and rotate on hover
+gsap.to('.share-button', {
+  scale: 1.2,
+  rotation: 360,
+  duration: 0.5,
+  ease: 'back.out'
+});
+
+// Pulse effect
+gsap.to('.share-button', {
+  scale: 'random(1.1, 1.3)',
+  duration: 0.3,
+  repeat: -1,
+  yoyo: true,
+  ease: 'sine.inOut'
+});
+
+// Click feedback
+gsap.to('.share-button', {
+  scale: 0.95,
+  duration: 0.1,
+  onComplete: () => {
+    gsap.to('.share-button', { scale: 1, duration: 0.2, ease: 'back.out' });
+  }
+});
+```
+
+**Priority:** ⭐⭐⭐ NICE-TO-HAVE - Micro-interaction
+
+---
+
+### 11.11 Matrix Rain Easter Egg
+
+**Why:** Fun, immersive Easter egg animation.
+
+```javascript
+// Activate matrix mode
+const activateMatrixMode = () => {
+  // Fade background
+  gsap.to('body', { backgroundColor: '#000000', duration: 0.5 });
+
+  // Animate matrix characters falling
+  const chars = document.querySelectorAll('.matrix-char');
+  gsap.to(chars, {
+    y: window.innerHeight,
+    opacity: 0,
+    duration: 'random(3, 6)',
+    repeat: -1,
+    ease: 'none',
+    delay: 'random(0, 2)',
+    stagger: 0.05
+  });
+
+  // Glow effect
+  gsap.to('.matrix-char', {
+    color: '#00ff41',
+    textShadow: '0 0 10px #00ff41',
+    duration: 0.2,
+    repeat: -1,
+    yoyo: true
+  });
+};
+```
+
+**Priority:** ⭐⭐⭐ NICE-TO-HAVE - Fun interaction
+
+---
+
+### 11.12 Accessibility - Focus State Animations
+
+**Why:** Visible focus animations improve accessibility.
+
+```javascript
+// Animate focus ring
+gsap.to('.button:focus, .input:focus', {
+  boxShadow: '0 0 0 4px rgba(0,113,227,0.5)',
+  duration: 0.3,
+  ease: 'power2.out'
+});
+
+// Highlight accessible elements on Tab navigation
+gsap.to('[tabindex]', {
+  outline: '2px solid #0071e3',
+  outlineOffset: '2px',
+  duration: 0.2,
+  ease: 'power1.out'
+});
+```
+
+**Priority:** ⭐⭐⭐⭐ MEDIUM - Important for A11y
+
+---
+
+### 11.13 Article Card Hover Effects
+
+**Why:** Interactive cards feel responsive and inviting.
+
+```javascript
+// Card scale on hover
+gsap.to('.article-card:hover', {
+  scale: 1.05,
+  y: -10,
+  boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
+  duration: 0.3,
+  ease: 'back.out'
+});
+
+// Stagger children on hover
+gsap.to('.article-card:hover .article-title', {
+  color: '#0071e3',
+  duration: 0.3,
+  ease: 'power1.out'
+});
+
+gsap.to('.article-card:hover .article-tag', {
+  backgroundColor: '#0071e3',
+  color: '#ffffff',
+  duration: 0.3,
+  stagger: 0.05,
+  ease: 'power1.out'
+});
+```
+
+**Priority:** ⭐⭐⭐ NICE-TO-HAVE - User engagement
+
+---
+
+### 11.14 Window Control Buttons Animation
+
+**Why:** Red/Yellow/Green buttons provide macOS authenticity.
+
+```javascript
+// Animate window control buttons on hover
+gsap.to('.window-button.close', {
+  backgroundColor: '#ff5f57',
+  boxShadow: '0 0 8px rgba(255,95,87,0.5)',
+  duration: 0.2,
+  ease: 'power1.out'
+});
+
+gsap.to('.window-button.minimize', {
+  backgroundColor: '#ffbd2e',
+  boxShadow: '0 0 8px rgba(255,189,46,0.5)',
+  duration: 0.2,
+  ease: 'power1.out'
+});
+
+gsap.to('.window-button.maximize', {
+  backgroundColor: '#28c940',
+  boxShadow: '0 0 8px rgba(40,201,64,0.5)',
+  duration: 0.2,
+  ease: 'power1.out'
+});
+
+// Click feedback
+gsap.to('.window-button', {
+  scale: 0.85,
+  duration: 0.1,
+  onComplete: () => {
+    gsap.to('.window-button', { scale: 1, duration: 0.15, ease: 'back.out' });
+  }
+});
+```
+
+**Priority:** ⭐⭐⭐⭐ MEDIUM - Important UX feedback
+
+---
+
+### 11.15 Dock Icon Hover Enhancement
+
+**Why:** Already has hover effect, can be enhanced with more polish.
+
+```javascript
+// Enhanced dock icon scale with rotation
+gsap.to('.dock-icon:hover', {
+  scale: 1.3,
+  rotation: 'random(-5, 5)',
+  duration: 0.3,
+  ease: 'back.out'
+});
+
+// Pop effect on click
+gsap.to('.dock-icon', {
+  scale: 0.9,
+  duration: 0.1,
+  onComplete: () => {
+    gsap.to('.dock-icon', { scale: 1, duration: 0.2, ease: 'elastic.out(1, 0.5)' });
+  }
+});
+
+// Bounce animation
+gsap.to('.dock-icon', {
+  y: -10,
+  duration: 0.3,
+  repeat: 1,
+  yoyo: true,
+  ease: 'power2.out'
+});
+```
+
+**Priority:** ⭐⭐⭐ NICE-TO-HAVE - Existing feature enhancement
+
+---
+
+### Implementation Quick Start
+
+```javascript
+// Create a central animation manager
+import gsap from 'gsap';
+
+export const useAnimations = () => {
+  const animateThemeTransition = (isDark) => {
+    gsap.to('body', {
+      backgroundColor: isDark ? '#1d1d1f' : '#ffffff',
+      duration: 0.6,
+      ease: 'power2.inOut'
+    });
+  };
+
+  const animateWindowOpen = (windowRef) => {
+    gsap.fromTo(windowRef.current, 
+      { opacity: 0, scale: 0.8, y: 100 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'back.out' }
+    );
+  };
+
+  const animateNotification = (notificationRef) => {
+    gsap.fromTo(notificationRef.current,
+      { x: 400, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.4, ease: 'back.out' }
+    );
+  };
+
+  return { animateThemeTransition, animateWindowOpen, animateNotification };
+};
+```
+
+---
+
+### Animation Priority Summary
+
+| Priority | Features |
+|----------|----------|
+| ⭐⭐⭐⭐⭐ HIGH | Theme transitions, Window max/min, Window open/close |
+| ⭐⭐⭐⭐ MEDIUM | Notifications, Spotlight, Keyboard shortcuts, Zen mode, Focus states |
+| ⭐⭐⭐ NICE-TO-HAVE | Wallpaper parallax, Analytics, Matrix, Cards, Dock |
+
+Start with **HIGH priority** animations for immediate polish, then add **MEDIUM** for comprehensive UX enhancement.
+
+---
+
 ## Implementation Roadmap 🗺️
 
 ### Phase 1 (Week 1-2): Essential
