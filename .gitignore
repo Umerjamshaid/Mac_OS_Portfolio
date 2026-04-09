@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Large media files
+public/ScreenShots/Demo.gif
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
