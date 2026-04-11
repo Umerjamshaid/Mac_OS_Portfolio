@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/Mac_OS_Portfolio/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
