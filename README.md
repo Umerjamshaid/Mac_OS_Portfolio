@@ -19,6 +19,8 @@
   </h2>
 </div>
 
+> **Note:** Proper video demo coming soon! (Currently dealing with a broken monitor 😅)
+
 <br />
 <p align="center">
   <a href="https://github.com/Umerjamshaid/Mac_OS_Portfolio/blob/main/LICENSE">
