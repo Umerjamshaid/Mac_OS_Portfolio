@@ -18,7 +18,7 @@ const navbar = () => {
   return (
     <nav>
         <div>
-            <img src={`${import.meta.env.BASE_URL}images/logo.svg`} alt="logo" />
+            <img src="/images/logo.svg" alt="logo" />
             <p className="font-bold">Umer's Portfolio</p>
 
             <ul>

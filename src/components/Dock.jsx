@@ -86,7 +86,7 @@ export const Dock = () => {
               onClick={() => toggleApp({ id, canOpen })}
             >
               <img
-                src={`${import.meta.env.BASE_URL}images/${icon}`}
+                src={`/images/${icon}`}
                 alt={name}
                 loading="lazy"
                 className={canOpen ? "" : "grayscale opacity-50"}
