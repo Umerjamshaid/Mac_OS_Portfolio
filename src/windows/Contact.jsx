@@ -133,7 +133,7 @@ const Contact = () => {
         <div className="flex flex-col items-center text-center space-y-3">
           <div className="relative group">
             <img
-              src={`${import.meta.env.BASE_URL}images/umer.jpg`}
+              src="/images/umer.jpg"
               alt="UmerJamshaid"
               className="w-20 rounded-full"
             />
