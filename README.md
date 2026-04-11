@@ -1,4 +1,4 @@
-<a href="<YOUR_DEMO_LINK_HERE>" target="_blank" rel="noopener">
+<a href="https://umerjamshaid.github.io/Mac_OS_Portfolio/" target="_blank" rel="noopener">
   <picture>
     <source media="(prefers-color-scheme: dark)" alt="macOS Portfolio" srcset="public/macbook.png" />
     <img alt="macOS Portfolio" src="public/macbook.png" />
@@ -6,7 +6,7 @@
 </a>
 
 <h4 align="center">
-  <a href="<YOUR_DEMO_LINK_HERE>">Live Demo</a> |
+  <a href="https://umerjamshaid.github.io/Mac_OS_Portfolio/">Live Demo</a> |
   <a href="https://github.com/Umerjamshaid/Mac_OS_Portfolio/issues">Report Bug</a> |
   <a href="https://github.com/Umerjamshaid/Mac_OS_Portfolio/issues">Request Feature</a>
 </h4>
@@ -35,7 +35,7 @@
 
 <div align="center">
   <figure>
-    <a href="<YOUR_DEMO_LINK_HERE>" target="_blank" rel="noopener">
+    <a href="https://umerjamshaid.github.io/Mac_OS_Portfolio/" target="_blank" rel="noopener">
       <img src="public/ScreenShots/Demo.gif" alt="macOS Portfolio Demo" />
     </a>
     <figcaption>
@@ -302,7 +302,7 @@ SOFTWARE.
 
 [![GitHub](https://img.shields.io/badge/GitHub-Umerjamshaid-181717?style=flat-square&logo=github)](https://github.com/Umerjamshaid)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0a66c2?style=flat-square&logo=linkedin)](<YOUR_LINKEDIN_URL_HERE>)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Live-00c853?style=flat-square&logo=vercel)](<YOUR_DEMO_LINK_HERE>)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Live-00c853?style=flat-square&logo=vercel)](https://umerjamshaid.github.io/Mac_OS_Portfolio/)
 
 ---
 
