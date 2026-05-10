@@ -1,5 +1,5 @@
 import { dockApps } from "#constants";
-import { useRef } from "react";
+import { useRef, useCallback } from "react";
 import { Tooltip } from "react-tooltip";
 import React from "react";
 import { gsap } from "gsap";
@@ -8,53 +8,76 @@ import useWindowStore from "#store/window";
 
 export const Dock = () => {
   const { openWindow, closeWindow, windows } = useWindowStore();
-  const dockRef = useRef(null);
+  const dockRef = useRef<HTMLDivElement>(null);
+  const iconsRef = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // macOS-like magnification: scale and translate based on distance to cursor
+  const updateDockMagnification = useCallback((mouseX: number) => {
+    const dock = dockRef.current;
+    if (!dock) return;
+
+    const dockRect = dock.getBoundingClientRect();
+    const relativeMouseX = mouseX - dockRect.left;
+
+    iconsRef.current.forEach((icon, index) => {
+      if (!icon) return;
+
+      const iconRect = icon.getBoundingClientRect();
+      const iconCenter = (iconRect.left + iconRect.right) / 2 - dockRect.left;
+      const distance = Math.abs(relativeMouseX - iconCenter);
+      const maxDistance = 150; // influence radius
+      const intensity = Math.max(0, 1 - distance / maxDistance);
+      // macOS-like curve: ease out cubic
+      const scale = 1 + 0.35 * Math.pow(intensity, 1.5);
+      const yOffset = -12 * intensity;
+
+      gsap.to(icon, {
+        duration: 0.25,
+        ease: "power2.out",
+        scale: scale,
+        y: yOffset,
+        overwrite: true,
+      });
+    });
+  }, []);
+
+  const resetIcons = useCallback(() => {
+    iconsRef.current.forEach((icon) => {
+      if (icon) {
+        gsap.to(icon, {
+          duration: 0.25,
+          scale: 1,
+          y: 0,
+          ease: "power2.out",
+          overwrite: true,
+        });
+      }
+    });
+  }, []);
 
   useGSAP(() => {
     const dock = dockRef.current;
     if (!dock) return;
 
-    const icons = dock.querySelectorAll(".dock-icon");
-
-    const animateIcon = (mouseX) => {
-      const { left } = dock.getBoundingClientRect();
-
-      icons.forEach((icon) => {
-        const { left: iconLeft, width } = icon.getBoundingClientRect();
-        const center = iconLeft - left + width / 2;
-        const distance = Math.abs(mouseX - center);
-
-        const intensity = Math.exp(-(distance ** 2.5) / 20000);
-
-        gsap.to(icon, {
-          duration: 0.3,
-          ease: "power1.out",
-          scale: 1 + 0.25 * intensity,
-          y: -15 * intensity,
-        });
-      });
+    const handleMouseMove = (e: MouseEvent) => {
+      updateDockMagnification(e.clientX);
     };
 
-    const handleMouseMove = (e) => {
-      const { left } = dock.getBoundingClientRect();
-
-      animateIcon(e.clientX - left);
+    const handleMouseLeave = () => {
+      resetIcons();
     };
-
-    const resetIcons = () =>
-      icons.forEach((icon) => gsap.to(icon, { duration: 0.3, scale: 1, y: 0, ease: "power1.out" }));
 
     dock.addEventListener("mousemove", handleMouseMove);
-    dock.addEventListener("mouseleave", resetIcons);
+    dock.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
       dock.removeEventListener("mousemove", handleMouseMove);
-      dock.removeEventListener("mouseleave", resetIcons);
-    }
-  }, []);
+      dock.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [updateDockMagnification, resetIcons]);
 
-  const toggleApp = (app) => {
-    if(!app.canOpen) return;
+  const toggleApp = (app: { id: string; canOpen: boolean }) => {
+    if (!app.canOpen) return;
 
     const window = windows[app.id];
     if (!window) {
@@ -67,15 +90,15 @@ export const Dock = () => {
     } else {
       openWindow(app.id);
     }
-    console.log(windows);
   };
 
   return (
     <section id="dock">
       <div ref={dockRef} className="dock-container">
-        {dockApps.map(({ id, name, icon, canOpen }) => (
-          <div key={id} className="relative flex justify-center">
+        {dockApps.map(({ id, name, icon, canOpen }, index) => (
+          <div key={id} className="dock-item-wrapper">
             <button
+              ref={(el) => (iconsRef.current[index] = el)}
               type="button"
               className="dock-icon"
               aria-label={name}
@@ -92,9 +115,10 @@ export const Dock = () => {
                 className={canOpen ? "" : "grayscale opacity-50"}
               />
             </button>
+            {/* Optional: add a small indicator for open apps (like a dot) */}
+            {windows[id]?.isOpen && <div className="open-indicator" />}
           </div>
         ))}
-
         <Tooltip id="dock-tooltip" place="top" className="tooltip" />
       </div>
     </section>
