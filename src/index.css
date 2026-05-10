@@ -92,25 +92,72 @@ body {
     }
   }
 
-  #dock {
-    @apply absolute bottom-5 left-1/2 -translate-x-1/2 z-50 select-none max-sm:hidden;
+#dock {
+  @apply absolute bottom-3 left-1/2 -translate-x-1/2 z-50 select-none max-sm:hidden;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.2));
 
-    .dock-container {
-      @apply bg-white/20 backdrop-blur-md justify-between rounded-2xl p-1.5 flex items-end gap-1.5;
-    }
+  .dock-container {
+    @apply bg-white/25 backdrop-blur-xl rounded-2xl px-2 py-2 flex items-end gap-1.5;
+    border: 0.5px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.02), 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
 
-    .tooltip {
-      @apply !py-1 !px-3 !w-fit !text-center !text-xs !rounded-md !bg-blue-200 !text-blue-900 !shadow-2xl;
-    }
+  .dock-item-wrapper {
+    @apply relative flex justify-center items-center;
+  }
 
-    .dock-icon {
-      @apply size-14 3xl:size-20 cursor-pointer;
+  .dock-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 12px;
+    will-change: transform;
+    @apply cursor-pointer transition-shadow duration-200;
 
-      img {
-        @apply object-cover object-center;
-      }
+    img {
+      @apply object-contain object-center w-full h-full;
+      border-radius: 10px;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
     }
   }
+
+  /* larger screens */
+  @media (min-width: 1920px) {
+    .dock-icon {
+      width: 70px;
+      height: 70px;
+    }
+  }
+
+  /* open app dot */
+  .open-indicator {
+    @apply absolute bottom-[-9px] left-1/2 transform -translate-x-1/2;
+    width: 5px;
+    height: 5px;
+    background-color: #5c5f66;
+    border-radius: 50%;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+  }
+
+  .tooltip {
+    @apply !py-1 !px-3 !w-fit !text-center !text-xs !rounded-md !bg-gray-800/90 !text-white !shadow-2xl !backdrop-blur-sm;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  /* reflection effect */
+  .dock-container::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 10%;
+    width: 80%;
+    height: 8px;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 80%);
+    filter: blur(3px);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+}
 
   #window-controls {
     @apply flex gap-2;
