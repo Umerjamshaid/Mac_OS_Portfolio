@@ -8,26 +8,25 @@ import useWindowStore from "#store/window";
 
 export const Dock = () => {
   const { openWindow, closeWindow, windows } = useWindowStore();
-  const dockRef = useRef<HTMLDivElement>(null);
-  const iconsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const dockRef = useRef(null);
+  const iconsRef = useRef([]);
 
-  // macOS-like magnification: scale and translate based on distance to cursor
-  const updateDockMagnification = useCallback((mouseX: number) => {
+  // macOS-like magnification
+  const updateDockMagnification = useCallback((mouseX) => {
     const dock = dockRef.current;
     if (!dock) return;
 
     const dockRect = dock.getBoundingClientRect();
     const relativeMouseX = mouseX - dockRect.left;
 
-    iconsRef.current.forEach((icon, index) => {
+    iconsRef.current.forEach((icon) => {
       if (!icon) return;
 
       const iconRect = icon.getBoundingClientRect();
       const iconCenter = (iconRect.left + iconRect.right) / 2 - dockRect.left;
       const distance = Math.abs(relativeMouseX - iconCenter);
-      const maxDistance = 150; // influence radius
+      const maxDistance = 150;
       const intensity = Math.max(0, 1 - distance / maxDistance);
-      // macOS-like curve: ease out cubic
       const scale = 1 + 0.35 * Math.pow(intensity, 1.5);
       const yOffset = -12 * intensity;
 
@@ -59,7 +58,7 @@ export const Dock = () => {
     const dock = dockRef.current;
     if (!dock) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = (e) => {
       updateDockMagnification(e.clientX);
     };
 
@@ -76,7 +75,7 @@ export const Dock = () => {
     };
   }, [updateDockMagnification, resetIcons]);
 
-  const toggleApp = (app: { id: string; canOpen: boolean }) => {
+  const toggleApp = (app) => {
     if (!app.canOpen) return;
 
     const window = windows[app.id];
@@ -115,7 +114,6 @@ export const Dock = () => {
                 className={canOpen ? "" : "grayscale opacity-50"}
               />
             </button>
-            {/* Optional: add a small indicator for open apps (like a dot) */}
             {windows[id]?.isOpen && <div className="open-indicator" />}
           </div>
         ))}
