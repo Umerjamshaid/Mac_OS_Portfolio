@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Search, X } from "lucide-react";
 import useWindowStore from "#store/window";
+import useDesktopStore from "#store/desktop";
 
 const base = import.meta.env.BASE_URL;
 
@@ -26,12 +27,8 @@ const SPOTLIGHT_ITEMS = [
   },
 ];
 
-const ALL_ITEMS = SPOTLIGHT_ITEMS.flatMap((g) =>
-  g.items.map((item) => ({ ...item, group: g.group }))
-);
-
 const Spotlight = () => {
-  const [open, setOpen] = useState(false);
+  const { isSpotlightOpen, openSpotlight, closeSpotlight } = useDesktopStore();
   const [query, setQuery] = useState("");
   const [cursor, setCursor] = useState(0);
   const inputRef = useRef(null);
@@ -39,7 +36,6 @@ const Spotlight = () => {
 
   const filteredGroups = (() => {
     if (!query.trim()) return SPOTLIGHT_ITEMS;
-
     const q = query.toLowerCase();
     return SPOTLIGHT_ITEMS
       .map((g) => ({
@@ -47,7 +43,7 @@ const Spotlight = () => {
         items: g.items.filter(
           (item) =>
             item.label.toLowerCase().includes(q) ||
-            item.subtitle.toLowerCase().includes(q)
+            item.subtitle.toLowerCase().includes(q),
         ),
       }))
       .filter((g) => g.items.length > 0);
@@ -55,82 +51,52 @@ const Spotlight = () => {
 
   const flatFiltered = filteredGroups.flatMap((g) => g.items);
 
-  const openSpotlight = useCallback(() => {
-    setOpen(true);
+  const handleClose = useCallback(() => {
+    closeSpotlight();
     setQuery("");
     setCursor(0);
-  }, []);
-
-  const closeSpotlight = useCallback(() => {
-    setOpen(false);
-    setQuery("");
-    setCursor(0);
-  }, []);
+  }, [closeSpotlight]);
 
   const handleSelect = useCallback(
     (item) => {
       openWindow(item.windowKey);
-      closeSpotlight();
+      handleClose();
     },
-    [openWindow, closeSpotlight]
+    [openWindow, handleClose],
   );
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        if (open) closeSpotlight();
+        if (isSpotlightOpen) handleClose();
         else openSpotlight();
         return;
       }
 
-      if (!open) return;
+      if (!isSpotlightOpen) return;
 
-      if (e.key === "Escape") {
-        e.preventDefault();
-        closeSpotlight();
-        return;
-      }
-
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
-        setCursor((c) => Math.min(c + 1, flatFiltered.length - 1));
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        setCursor((c) => Math.max(c - 1, 0));
-      } else if (e.key === "Enter") {
-        e.preventDefault();
-        const item = flatFiltered[cursor];
-        if (item) handleSelect(item);
-      }
+      if (e.key === "Escape") { e.preventDefault(); handleClose(); return; }
+      if (e.key === "ArrowDown") { e.preventDefault(); setCursor((c) => Math.min(c + 1, flatFiltered.length - 1)); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); setCursor((c) => Math.max(c - 1, 0)); }
+      else if (e.key === "Enter") { e.preventDefault(); const item = flatFiltered[cursor]; if (item) handleSelect(item); }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [open, cursor, flatFiltered, openSpotlight, closeSpotlight, handleSelect]);
+  }, [isSpotlightOpen, cursor, flatFiltered, openSpotlight, handleClose, handleSelect]);
 
   useEffect(() => {
-    if (open) {
-      setTimeout(() => inputRef.current?.focus(), 20);
-    }
-  }, [open]);
+    if (isSpotlightOpen) setTimeout(() => inputRef.current?.focus(), 20);
+  }, [isSpotlightOpen]);
 
-  useEffect(() => {
-    setCursor(0);
-  }, [query]);
+  useEffect(() => { setCursor(0); }, [query]);
 
-  if (!open) return null;
+  if (!isSpotlightOpen) return null;
 
   return (
-    <div
-      className="spotlight-backdrop"
-      onClick={closeSpotlight}
-    >
-      <div
-        className="spotlight-panel"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* search bar */}
+    <div className="spotlight-backdrop" onClick={handleClose}>
+      <div className="spotlight-panel" onClick={(e) => e.stopPropagation()}>
         <div className="spotlight-search-bar">
           <Search size={18} className="text-gray-400 flex-shrink-0" />
           <input
@@ -148,7 +114,6 @@ const Spotlight = () => {
           )}
         </div>
 
-        {/* results */}
         {flatFiltered.length > 0 ? (
           <div className="spotlight-results">
             {filteredGroups.map((group) => (
@@ -164,18 +129,10 @@ const Spotlight = () => {
                       onMouseEnter={() => setCursor(globalIdx)}
                       onClick={() => handleSelect(item)}
                     >
-                      <img
-                        src={item.icon}
-                        alt={item.label}
-                        className="w-8 h-8 object-contain rounded-lg flex-shrink-0"
-                      />
+                      <img src={item.icon} alt={item.label} className="w-8 h-8 object-contain rounded-lg flex-shrink-0" />
                       <div className="min-w-0">
-                        <p className={`text-sm font-medium truncate ${isActive ? "text-white" : "text-gray-800"}`}>
-                          {item.label}
-                        </p>
-                        <p className={`text-xs truncate ${isActive ? "text-white/70" : "text-gray-400"}`}>
-                          {item.subtitle}
-                        </p>
+                        <p className={`text-sm font-medium truncate ${isActive ? "text-white" : "text-gray-800"}`}>{item.label}</p>
+                        <p className={`text-xs truncate ${isActive ? "text-white/70" : "text-gray-400"}`}>{item.subtitle}</p>
                       </div>
                     </button>
                   );
@@ -189,7 +146,6 @@ const Spotlight = () => {
           </div>
         )}
 
-        {/* footer hint */}
         <div className="spotlight-footer">
           <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
           <span><kbd>↵</kbd> open</span>

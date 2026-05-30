@@ -16,6 +16,7 @@ const getSavedId = () => {
 const useDesktopStore = create(
   immer((set) => ({
     activeWallpaperId: getSavedId(),
+    isSpotlightOpen: false,
 
     setWallpaper: (id) =>
       set((state) => {
@@ -38,6 +39,21 @@ const useDesktopStore = create(
         const prev = WALLPAPERS[(idx - 1 + WALLPAPERS.length) % WALLPAPERS.length];
         state.activeWallpaperId = prev.id;
         localStorage.setItem(STORAGE_KEY, String(prev.id));
+      }),
+
+    openSpotlight: () =>
+      set((state) => {
+        state.isSpotlightOpen = true;
+      }),
+
+    closeSpotlight: () =>
+      set((state) => {
+        state.isSpotlightOpen = false;
+      }),
+
+    toggleSpotlight: () =>
+      set((state) => {
+        state.isSpotlightOpen = !state.isSpotlightOpen;
       }),
   })),
 );

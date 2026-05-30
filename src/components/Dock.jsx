@@ -11,7 +11,6 @@ export const Dock = () => {
   const dockRef = useRef(null);
   const iconsRef = useRef([]);
 
-  // macOS-like magnification
   const updateDockMagnification = useCallback((mouseX) => {
     const dock = dockRef.current;
     if (!dock) return;
@@ -21,7 +20,6 @@ export const Dock = () => {
 
     iconsRef.current.forEach((icon) => {
       if (!icon) return;
-
       const iconRect = icon.getBoundingClientRect();
       const iconCenter = (iconRect.left + iconRect.right) / 2 - dockRect.left;
       const distance = Math.abs(relativeMouseX - iconCenter);
@@ -58,13 +56,8 @@ export const Dock = () => {
     const dock = dockRef.current;
     if (!dock) return;
 
-    const handleMouseMove = (e) => {
-      updateDockMagnification(e.clientX);
-    };
-
-    const handleMouseLeave = () => {
-      resetIcons();
-    };
+    const handleMouseMove = (e) => updateDockMagnification(e.clientX);
+    const handleMouseLeave = () => resetIcons();
 
     dock.addEventListener("mousemove", handleMouseMove);
     dock.addEventListener("mouseleave", handleMouseLeave);
@@ -75,19 +68,33 @@ export const Dock = () => {
     };
   }, [updateDockMagnification, resetIcons]);
 
-  const toggleApp = (app) => {
+  const bounceDockIcon = useCallback((index) => {
+    const icon = iconsRef.current[index];
+    if (!icon) return;
+    gsap.killTweensOf(icon);
+    gsap.timeline()
+      .to(icon, { y: -22, duration: 0.16, ease: "power2.out" })
+      .to(icon, { y: 0,   duration: 0.14, ease: "power2.in"  })
+      .to(icon, { y: -10, duration: 0.11, ease: "power2.out" })
+      .to(icon, { y: 0,   duration: 0.10, ease: "power2.in"  })
+      .to(icon, { y: -4,  duration: 0.08, ease: "power2.out" })
+      .to(icon, { y: 0,   duration: 0.08, ease: "power2.in"  });
+  }, []);
+
+  const toggleApp = (app, index) => {
     if (!app.canOpen) return;
 
-    const window = windows[app.id];
-    if (!window) {
+    const win = windows[app.id];
+    if (!win) {
       console.error(`App with id ${app.id} not found in windows store.`);
       return;
     }
 
-    if (window.isOpen) {
+    if (win.isOpen) {
       closeWindow(app.id);
     } else {
       openWindow(app.id);
+      bounceDockIcon(index);
     }
   };
 
@@ -105,7 +112,7 @@ export const Dock = () => {
               data-tooltip-content={name}
               data-tooltip-delay-show={150}
               disabled={!canOpen}
-              onClick={() => toggleApp({ id, canOpen })}
+              onClick={() => toggleApp({ id, canOpen }, index)}
             >
               <img
                 src={`${import.meta.env.BASE_URL}images/${icon}`}
