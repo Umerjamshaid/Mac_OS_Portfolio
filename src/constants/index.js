@@ -505,3 +505,38 @@ const WINDOW_CONFIG = {
 };
 
 export { INITIAL_Z_INDEX, WINDOW_CONFIG };
+
+const WALLPAPERS = [
+  {
+    id: 1,
+    label: "Tahoe Light",
+    type: "image",
+    src: `${base}images/low-res-tahoe-light.gif`,
+  },
+  {
+    id: 2,
+    label: "macOS Tahoe Dark",
+    type: "gif",
+    src: `${base}images/macOS_Tahoe_Dark.gif`,
+  },
+  {
+    id: 3,
+    label: "Ocean Waves",
+    type: "gif",
+    src: `${base}images/ocean-waves-wallpaper.gif`,
+  },
+  {
+    id: 4,
+    label: "Rain",
+    type: "gif",
+    src: `${base}images/rain-gif-desktop-wallpaper.gif`,
+  },
+  {
+    id: 5,
+    label: "Classic Desktop",
+    type: "image",
+    src: `${base}images/desktop-wallpaper.jpg`,
+  },
+];
+
+export { WALLPAPERS };

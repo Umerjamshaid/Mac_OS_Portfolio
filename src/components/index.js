@@ -3,5 +3,7 @@ import  {Welcome}  from "#components/welcome.jsx"
 import { Dock } from "#components/Dock.jsx"
 import WindowControls from "#components/WindowControls.jsx"
 import Home from "./Home"
+import Wallpaper from "./Wallpaper"
+import DesktopContextMenu from "./DesktopContextMenu"
 
-export {Navbar, Welcome, Dock, WindowControls, Home};
+export {Navbar, Welcome, Dock, WindowControls, Home, Wallpaper, DesktopContextMenu};

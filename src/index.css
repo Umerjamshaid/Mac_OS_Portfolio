@@ -7,9 +7,6 @@ body {
   width: 100dvw;
   overflow: hidden;
   height: 100dvh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
 /*
@@ -452,6 +449,107 @@ body {
           @apply text-sm text-white text-center px-1 rounded-md group-hover:bg-blue-500 transition-colors max-w-40;
         }
       }
+    }
+  }
+
+  /* ── Desktop Context Menu ── */
+  .context-menu {
+    position: fixed;
+    z-index: 9999;
+    min-width: 232px;
+    border-radius: 12px;
+    border: 0.5px solid rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+    padding: 6px;
+    user-select: none;
+    animation: context-menu-appear 0.12s ease-out;
+  }
+
+  @keyframes context-menu-appear {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .context-menu-label {
+    @apply text-xs font-semibold text-gray-400 px-3 py-1;
+  }
+
+  .context-menu-wallpaper-info {
+    @apply text-xs text-gray-400 px-3 py-1 italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .context-menu-separator {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.08);
+    margin: 4px 6px;
+  }
+
+  .context-menu-item {
+    @apply w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-800 text-left cursor-default transition-colors duration-100;
+
+    &:hover {
+      @apply bg-blue-500 text-white;
+
+      .context-menu-arrow {
+        @apply text-white;
+      }
+    }
+  }
+
+  .context-menu-item-active {
+    @apply font-medium;
+  }
+
+  .context-menu-icon {
+    @apply text-base w-5 text-center flex-shrink-0;
+  }
+
+  .context-menu-arrow {
+    @apply ml-auto text-gray-400 text-xs;
+  }
+
+  .context-menu-checkmark {
+    @apply ml-auto text-blue-500 text-sm font-bold;
+  }
+
+  .context-menu-submenu-trigger {
+    position: relative;
+  }
+
+  .context-submenu {
+    position: absolute;
+    left: calc(100% + 4px);
+    top: -6px;
+    min-width: 200px;
+    border-radius: 12px;
+    border: 0.5px solid rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+    padding: 6px;
+    animation: context-menu-appear 0.1s ease-out;
+  }
+
+  .context-submenu-item {
+    .context-menu-checkmark {
+      color: #2563eb;
+    }
+
+    &:hover .context-menu-checkmark {
+      @apply text-white;
     }
   }
 }
