@@ -40,37 +40,43 @@ const navIcons = [
 const dockApps = [
   {
     id: "finder",
-    name: "Portfolio", // was "Finder"
+    name: "Portfolio",
     icon: "finder.png",
     canOpen: true,
   },
   {
     id: "safari",
-    name: "Articles", // was "Safari"
+    name: "Articles",
     icon: "safari.png",
     canOpen: true,
   },
   {
     id: "photos",
-    name: "Gallery", // was "Photos"
+    name: "Gallery",
     icon: "photos.png",
     canOpen: true,
   },
   {
     id: "contact",
-    name: "Contact", // or "Get in touch"
+    name: "Contact",
     icon: "contact.png",
     canOpen: true,
   },
   {
+    id: "settings",
+    name: "System Settings",
+    icon: "settings.svg",
+    canOpen: true,
+  },
+  {
     id: "terminal",
-    name: "Skills", // was "Terminal"
+    name: "Skills",
     icon: "terminal.png",
     canOpen: true,
   },
   {
     id: "trash",
-    name: "Archive", // was "Trash"
+    name: "Archive",
     icon: "trash.png",
     canOpen: false,
   },
@@ -223,14 +229,13 @@ const WORK_LOCATION = {
   icon: `${base}icons/work.svg`,
   kind: "folder",
   children: [
-    // ▶ Project 1
     {
       id: 5,
       name: "Nike Ecommerce Website Application",
       icon: `${base}images/folder.png`,
       kind: "folder",
-      position: "top-10 left-5", // icon position inside Finder
-      windowPosition: "top-[5vh] left-5", // optional: Finder window position
+      position: "top-10 left-5",
+      windowPosition: "top-[5vh] left-5",
       children: [
         {
           id: 1,
@@ -275,8 +280,6 @@ const WORK_LOCATION = {
         },
       ],
     },
-
-    // ▶ Project 2
     {
       id: 6,
       name: "AI Resume Analyzer",
@@ -328,8 +331,6 @@ const WORK_LOCATION = {
         },
       ],
     },
-
-    // ▶ Project 3
     {
       id: 7,
       name: "Food Delivery App",
@@ -349,7 +350,7 @@ const WORK_LOCATION = {
             "Our Food Delivery App is a fast and convenient way to order meals from your favorite restaurants.",
             "Instead of making calls or waiting in line, you can browse menus, customize orders, and track deliveries in real time.",
             "Think of it like having your favorite restaurants in your pocket—ready to deliver anytime, anywhere.",
-            "It’s built with React Native, so it works smoothly on both iOS and Android with a clean, modern design.",
+            "It's built with React Native, so it works smoothly on both iOS and Android with a clean, modern design.",
           ],
         },
         {
@@ -428,9 +429,9 @@ const ABOUT_LOCATION = {
       subtitle: "Meet the Developer Behind the Code",
       image: `${base}images/adrian.jpg`,
       description: [
-        "Hey! I’m Adrian 👋, a web developer who enjoys building sleek, interactive websites that actually work well.",
+        "Hey! I'm Adrian 👋, a web developer who enjoys building sleek, interactive websites that actually work well.",
         "I specialize in JavaScript, React, and Next.js—and I love making things feel smooth, fast, and just a little bit delightful.",
-        "I’m big on clean UI, good UX, and writing code that doesn’t need a search party to debug.",
+        "I'm big on clean UI, good UX, and writing code that doesn't need a search party to debug.",
         "Outside of dev work, you'll find me tweaking layouts at 2AM, sipping overpriced coffee, or impulse-buying gadgets I absolutely convinced myself I needed 😅",
       ],
     },
@@ -450,8 +451,6 @@ const RESUME_LOCATION = {
       icon: `${base}images/pdf.png`,
       kind: "file",
       fileType: "pdf",
-      // you can add `href` if you want to open a hosted resume
-      // href: "/your/resume/path.pdf",
     },
   ],
 };
@@ -494,14 +493,15 @@ export const locations = {
 const INITIAL_Z_INDEX = 1000;
 
 const WINDOW_CONFIG = {
-  finder: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
-  contact: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
-  resume: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
-  safari: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
-  photos: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  finder:   { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  contact:  { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  resume:   { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  safari:   { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  photos:   { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   terminal: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
-  txtfile: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
-  imgfile: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  settings: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  txtfile:  { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  imgfile:  { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };
 
 export { INITIAL_Z_INDEX, WINDOW_CONFIG };

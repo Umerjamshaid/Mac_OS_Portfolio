@@ -70,7 +70,8 @@ const WindowWrapper = (Component, windowKey) => {
           duration: 0.22, ease: "power3.in",
           onComplete: () => {
             el.style.display = "none";
-            gsap.set(el, { clearProps: "all" });
+            // Clear only what we animated — never clearProps:"all" here
+            gsap.set(el, { clearProps: "scale,opacity,y,filter" });
             closingTween.current = null;
           },
         });
@@ -78,39 +79,40 @@ const WindowWrapper = (Component, windowKey) => {
       }
 
       // ── Minimise: open → minimised ──
+      // Fix: do NOT call clearProps:"all" in onComplete — it wipes display:none
+      // Fix: do NOT animate x (would override Draggable's drag position)
       if (wasOpen && !wasMin && isOpen && isMinimized) {
-        const rect = el.getBoundingClientRect();
-        const dockY = window.innerHeight - rect.top - rect.height * 0.5;
         gsap.to(el, {
-          scale: 0.1, opacity: 0, y: dockY, x: 0,
-          duration: 0.38, ease: "power3.in",
+          scale: 0.08,
+          opacity: 0,
+          duration: 0.3,
+          ease: "power3.in",
           onComplete: () => {
             el.style.display = "none";
-            gsap.set(el, { clearProps: "all" });
+            // Leave scale/opacity in place — fromTo on restore will override them
           },
         });
         return;
       }
 
       // ── Restore from minimise ──
+      // fromTo explicitly sets start state, so stale scale/opacity from minimize don't matter
+      // We do NOT animate y — window stays at its dragged position
       if (wasMin && isOpen && !isMinimized) {
         el.style.display = "block";
         gsap.fromTo(
           el,
-          { scale: 0.12, opacity: 0, y: 60 },
-          { scale: 1, opacity: 1, y: 0, duration: 0.44, ease: "back.out(1.5)" },
+          { scale: 0.08, opacity: 0 },
+          { scale: 1,    opacity: 1, duration: 0.42, ease: "back.out(1.6)" },
         );
       }
     }, [isOpen, isMinimized]);
 
-    // Fullscreen: toggle draggable
+    // Fullscreen: enable/disable dragging
     useLayoutEffect(() => {
       if (!draggableRef.current) return;
-      if (isFullscreen) {
-        draggableRef.current.disable();
-      } else {
-        draggableRef.current.enable();
-      }
+      if (isFullscreen) draggableRef.current.disable();
+      else              draggableRef.current.enable();
     }, [isFullscreen]);
 
     return (
@@ -126,9 +128,7 @@ const WindowWrapper = (Component, windowKey) => {
     );
   };
 
-  Wrapped.displayName = `WindowWrapper(${
-    Component.displayName || Component.name || "Component"
-  })`;
+  Wrapped.displayName = `WindowWrapper(${Component.displayName || Component.name || "Component"})`;
   return Wrapped;
 };
 

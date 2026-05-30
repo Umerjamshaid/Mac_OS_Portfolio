@@ -8,5 +8,6 @@ import DesktopContextMenu from "./DesktopContextMenu"
 import Spotlight from "./Spotlight"
 import LockScreen from "./LockScreen"
 import WifiPopup from "./WifiPopup"
+import SpotifyPlayer from "./SpotifyPlayer"
 
-export { Navbar, Welcome, Dock, WindowControls, Home, Wallpaper, DesktopContextMenu, Spotlight, LockScreen, WifiPopup };
+export { Navbar, Welcome, Dock, WindowControls, Home, Wallpaper, DesktopContextMenu, Spotlight, LockScreen, WifiPopup, SpotifyPlayer };

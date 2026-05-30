@@ -408,6 +408,19 @@ body {
     }
   }
 
+  /* ── Settings Window ── */
+  #settings {
+    @apply absolute bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    width: 720px;
+    height: 500px;
+    top: 8vh;
+    left: 18%;
+
+    #window-header {
+      @apply flex items-center gap-3 px-4 py-2.5 bg-gray-50 border-b border-gray-200 select-none;
+    }
+  }
+
   #txtfile {
     @apply w-md absolute top-36 right-32 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
@@ -783,5 +796,81 @@ body {
   .wifi-popup-footer {
     @apply flex items-center justify-between px-4 py-2.5 text-xs;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  /* ─── Spotify Floating Player ─── */
+  .spotify-widget {
+    position: fixed;
+    bottom: 76px;
+    right: 16px;
+    z-index: 9980;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .spotify-toggle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #1db954;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(29, 185, 84, 0.45);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+    flex-shrink: 0;
+  }
+  .spotify-toggle:hover {
+    transform: scale(1.12);
+    box-shadow: 0 6px 24px rgba(29, 185, 84, 0.6);
+  }
+
+  .spotify-panel {
+    width: 300px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(18, 18, 18, 0.96);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 0 0.5px rgba(255,255,255,0.06) inset;
+    animation: spotify-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes spotify-in {
+    from { opacity: 0; transform: scale(0.82) translateY(18px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+  }
+
+  .spotify-panel-header {
+    @apply flex items-center justify-between px-4 py-3;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .spotify-logo {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .spotify-viz {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 2.5px;
+    padding: 10px 16px 6px;
+    height: 46px;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .spotify-viz-bar {
+    width: 3.5px;
+    min-height: 3px;
+    background: linear-gradient(to top, #1db954, #1ed760);
+    border-radius: 2px;
+    height: 20px;
+    transform-origin: bottom;
   }
 }
