@@ -5,5 +5,6 @@ import WindowControls from "#components/WindowControls.jsx"
 import Home from "./Home"
 import Wallpaper from "./Wallpaper"
 import DesktopContextMenu from "./DesktopContextMenu"
+import Spotlight from "./Spotlight"
 
-export {Navbar, Welcome, Dock, WindowControls, Home, Wallpaper, DesktopContextMenu};
+export {Navbar, Welcome, Dock, WindowControls, Home, Wallpaper, DesktopContextMenu, Spotlight};

@@ -1,6 +1,6 @@
-import { Dock, Home, Navbar, Welcome, Wallpaper, DesktopContextMenu } from "#components"
+import { Dock, Home, Navbar, Welcome, Wallpaper, DesktopContextMenu, Spotlight } from "#components"
 import { Draggable } from "gsap/all"
-import { Finder, Resume, Safari, Terminal, TextFile, ImageFile, Contact } from "#windows";
+import { Finder, Resume, Safari, Terminal, TextFile, ImageFile, Contact, Photos } from "#windows";
 import { gsap } from "gsap";
 
 gsap.registerPlugin(Draggable);
@@ -10,6 +10,7 @@ export const App = () => {
     <main>
       <Wallpaper />
       <DesktopContextMenu />
+      <Spotlight />
       <Navbar />
       <Welcome />
       <Dock />
@@ -21,6 +22,7 @@ export const App = () => {
       <TextFile />
       <ImageFile />
       <Contact />
+      <Photos />
 
       <Home />
     </main>
