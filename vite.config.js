@@ -4,10 +4,13 @@ import tailwindcss from '@tailwindcss/vite'
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
-// https://vite.dev/config/
 export default defineConfig({
-  base: '/Mac_OS_Portfolio/',
   plugins: [react(), tailwindcss()],
+  server: {
+    host: '0.0.0.0',
+    port: 5000,
+    allowedHosts: true,
+  },
   resolve: {
     alias: {
       '#components' : resolve(dirname(fileURLToPath(import.meta.url)), 'src/components'),
