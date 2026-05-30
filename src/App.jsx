@@ -1,4 +1,4 @@
-import { Dock, Home, Navbar, Welcome, Wallpaper, DesktopContextMenu, Spotlight } from "#components"
+import { Dock, Home, Navbar, Welcome, Wallpaper, DesktopContextMenu, Spotlight, LockScreen } from "#components"
 import { Draggable } from "gsap/all"
 import { Finder, Resume, Safari, Terminal, TextFile, ImageFile, Contact, Photos } from "#windows";
 import { gsap } from "gsap";
@@ -25,6 +25,8 @@ export const App = () => {
       <Photos />
 
       <Home />
+
+      <LockScreen />
     </main>
   );
 };
