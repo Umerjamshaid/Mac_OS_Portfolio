@@ -9,5 +9,7 @@ import Spotlight from "./Spotlight"
 import LockScreen from "./LockScreen"
 import WifiPopup from "./WifiPopup"
 import SpotifyPlayer from "./SpotifyPlayer"
+import Notifications from "./Notifications"
+import DesktopEffects from "./DesktopEffects"
 
-export { Navbar, Welcome, Dock, WindowControls, Home, Wallpaper, DesktopContextMenu, Spotlight, LockScreen, WifiPopup, SpotifyPlayer };
+export { Navbar, Welcome, Dock, WindowControls, Home, Wallpaper, DesktopContextMenu, Spotlight, LockScreen, WifiPopup, SpotifyPlayer, Notifications, DesktopEffects };

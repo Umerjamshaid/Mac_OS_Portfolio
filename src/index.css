@@ -266,32 +266,46 @@ body {
     }
   }
 
+  /* ── Contact / Mail window ── */
   #contact {
-    @apply max-w-2xl absolute top-60 left-5/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply absolute bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    width: 680px;
+    height: 480px;
+    top: 10vh;
+    left: 22%;
 
-    h2 {
-      @apply font-bold text-sm text-center w-full;
+    #window-header {
+      @apply flex items-center gap-3 px-4 py-2.5 bg-gray-50 border-b border-gray-200 select-none;
     }
+  }
 
-    h3 {
-      @apply text-xl font-semibold;
-    }
+  .mail-sidebar {
+    width: 170px;
+    flex-shrink: 0;
+    background: rgba(246, 246, 248, 0.98);
+    border-right: 1px solid rgba(0,0,0,0.07);
+    overflow-y: auto;
+  }
 
-    ul {
-      @apply flex items-center gap-3;
+  .mail-sidebar-btn {
+    @apply w-full flex items-center gap-2 px-2 py-1.5 rounded-lg transition-colors duration-100;
+    margin-bottom: 1px;
+  }
+  .mail-sidebar-btn:not(:disabled):hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  .mail-sidebar-btn--active {
+    background: rgba(59, 130, 246, 0.12) !important;
+    color: #2563eb;
+    font-weight: 600;
+  }
 
-      li {
-        @apply rounded-lg p-3 w-60 hover:-translate-y-0.5 hover:scale-105 origin-center transition-all duration-300;
-
-        a {
-          @apply space-y-5;
-        }
-
-        p {
-          @apply font-semibold text-sm text-white;
-        }
-      }
-    }
+  .mail-email-row {
+    @apply px-4 py-3 cursor-default select-none;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .mail-email-row--selected {
+    background: rgba(59, 130, 246, 0.06);
   }
 
   #photos {
@@ -897,5 +911,78 @@ body {
   @keyframes tooltip-in {
     from { opacity: 0; transform: translateX(-50%) translateY(-3px); }
     to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  /* ─── System Notifications ─── */
+  .notification-stack {
+    position: fixed;
+    top: 38px;
+    right: 12px;
+    z-index: 9985;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+  }
+
+  .notification-toast {
+    pointer-events: all;
+    width: 320px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border: 0.5px solid rgba(0, 0, 0, 0.10);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 1px 0 rgba(255,255,255,0.8) inset;
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+
+  .notification-icon-wrap {
+    @apply w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0;
+    background: linear-gradient(135deg, #4f8ef7, #3b5de7);
+    box-shadow: 0 4px 12px rgba(79, 142, 247, 0.4);
+  }
+
+  /* ─── Desktop Click Ripple ─── */
+  .desktop-ripple {
+    position: fixed;
+    width: 0;
+    height: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9960;
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
+    animation: desktop-ripple-expand 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes desktop-ripple-expand {
+    0%   { width: 0;     height: 0;     opacity: 0.8; }
+    100% { width: 120px; height: 120px; opacity: 0;   }
+  }
+
+  /* ─── Konami Achievement Toast ─── */
+  .achievement-toast {
+    position: fixed;
+    bottom: 88px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 0.5px solid rgba(255, 190, 0, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 215, 0, 0.15);
+    z-index: 9990;
+    transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+    /* keep the toast X-centered even after the translateY transition */
+    left: 50%;
+    margin-left: -160px;
+    width: 320px;
   }
 }
