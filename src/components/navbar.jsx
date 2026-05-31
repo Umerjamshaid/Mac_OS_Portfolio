@@ -1,15 +1,24 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import dayjs from "dayjs"
-import { navIcons, navLinks } from "#constants"
+import { navIcons, navLinks, WALLPAPERS } from "#constants"
 import useWindowStore from "#store/window"
 import useDesktopStore from "#store/desktop"
 import WifiPopup from "./WifiPopup"
 
+const ICON_LABELS = {
+  1: "Wi-Fi",
+  2: "Spotlight",
+  3: "Profile",
+  4: "Appearance",
+};
+
 const navbar = () => {
   const { openWindow } = useWindowStore();
-  const { toggleSpotlight } = useDesktopStore();
-  const [time, setTime] = useState(dayjs());
+  const { toggleSpotlight, activeWallpaperId, setWallpaper } = useDesktopStore();
+  const [time, setTime]       = useState(dayjs());
   const [wifiOpen, setWifiOpen] = useState(false);
+  const [tooltip, setTooltip]  = useState(null); // { id, label }
+  const tooltipTimer = useRef(null);
 
   useEffect(() => {
     const id = setInterval(() => setTime(dayjs()), 1000);
@@ -17,8 +26,25 @@ const navbar = () => {
   }, []);
 
   const handleIconClick = (id) => {
-    if (id === 1) setWifiOpen((v) => !v);
-    if (id === 2) toggleSpotlight();
+    if (id === 1) { setWifiOpen((v) => !v); return; }
+    if (id === 2) { toggleSpotlight(); return; }
+    if (id === 3) { openWindow("settings"); return; }
+    if (id === 4) {
+      // Toggle dark / light appearance — switch between light (id 1) and dark (id 2)
+      const lightIds = [1, 5];
+      const isDark = !lightIds.includes(activeWallpaperId);
+      setWallpaper(isDark ? 1 : 2);
+    }
+  };
+
+  const showTooltip = (id) => {
+    clearTimeout(tooltipTimer.current);
+    tooltipTimer.current = setTimeout(() => setTooltip(id), 500);
+  };
+
+  const hideTooltip = () => {
+    clearTimeout(tooltipTimer.current);
+    setTooltip(null);
   };
 
   return (
@@ -42,14 +68,20 @@ const navbar = () => {
             {navIcons.map(({ id, img }) => (
               <li
                 key={id}
+                className="relative cursor-pointer"
                 onClick={() => handleIconClick(id)}
-                className="cursor-pointer"
+                onMouseEnter={() => showTooltip(id)}
+                onMouseLeave={hideTooltip}
               >
                 <img
                   src={img}
-                  className={`icon${id === 1 && wifiOpen ? " opacity-60" : ""}`}
-                  alt={`icon-${id}`}
+                  className={`icon transition-opacity${id === 1 && wifiOpen ? " opacity-50" : ""}`}
+                  alt={ICON_LABELS[id] || `icon-${id}`}
                 />
+                {/* macOS-style tooltip */}
+                {tooltip === id && (
+                  <span className="navbar-tooltip">{ICON_LABELS[id]}</span>
+                )}
               </li>
             ))}
           </ul>

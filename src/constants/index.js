@@ -382,6 +382,48 @@ const WORK_LOCATION = {
         },
       ],
     },
+    {
+      id: 8,
+      name: "Baby Shop Hub",
+      icon: `${base}images/folder.png`,
+      kind: "folder",
+      position: "top-28 right-40",
+      windowPosition: "top-[10vh] right-8",
+      children: [
+        {
+          id: 1,
+          name: "Baby Shop Hub.txt",
+          icon: `${base}images/txt.png`,
+          kind: "file",
+          fileType: "txt",
+          position: "top-5 left-10",
+          description: [
+            "Baby Shop Hub is a full-featured mobile e-commerce app designed for parents shopping for baby products.",
+            "Instead of browsing scattered websites, parents get a clean, curated experience with product categories, a smart cart, and secure checkout.",
+            "Think of it as a dedicated baby store in your pocket — fast, safe, and easy to navigate with one hand while holding your baby with the other.",
+            "Built with Flutter and Dart, the app runs natively on both iOS and Android with smooth 60fps animations and a warm, friendly UI.",
+          ],
+        },
+        {
+          id: 2,
+          name: "github.com",
+          icon: `${base}images/safari.png`,
+          kind: "file",
+          fileType: "url",
+          href: "https://github.com",
+          position: "top-5 right-10",
+        },
+        {
+          id: 3,
+          name: "Design.fig",
+          icon: `${base}images/plain.png`,
+          kind: "file",
+          fileType: "fig",
+          href: "https://figma.com",
+          position: "top-48 right-10",
+        },
+      ],
+    },
   ],
 };
 
