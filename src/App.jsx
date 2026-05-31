@@ -1,39 +1,55 @@
-import { Dock, Home, Navbar , Welcome } from "#components"
+import { useCallback, useRef } from "react";
+import { Dock, Home, Navbar, Welcome, Wallpaper, DesktopContextMenu, Spotlight, LockScreen, SpotifyPlayer, Notifications, DesktopEffects } from "#components"
 import { Draggable } from "gsap/all"
-import { Finder, Resume, Safari, Terminal, TextFile, ImageFile, Contact } from "#windows";
-import { useEffect } from "react";
-
-
-// import { gsap } from "gsap/gsap-core";
+import { Finder, Resume, Safari, Terminal, TextFile, ImageFile, Contact, Photos, Settings } from "#windows";
 import { gsap } from "gsap";
 
 gsap.registerPlugin(Draggable);
 
 export const App = () => {
-  useEffect(() => {
-    document.body.style.backgroundImage = `url(${import.meta.env.BASE_URL}images/low-res-tahoe-light.gif)`;
-    return () => {
-      document.body.style.backgroundImage = "";
-    };
+  const addRippleRef = useRef(null);
+
+  // Wire desktop clicks → ripple effect via DesktopEffects
+  const registerRipple = useCallback((fn) => { addRippleRef.current = fn; }, []);
+
+  const handleDesktopClick = useCallback((e) => {
+    // Only ripple on the raw desktop background (not windows / dock / navbar)
+    const tag = e.target.tagName;
+    const isBackground =
+      e.target === e.currentTarget ||
+      e.target.id === "wallpaper" ||
+      e.target.closest("#home") !== null && e.target.tagName !== "LI" && e.target.tagName !== "IMG" && e.target.tagName !== "P";
+
+    if (isBackground && addRippleRef.current) {
+      addRippleRef.current(e.clientX, e.clientY);
+    }
   }, []);
 
   return (
-    <main>
-      <Navbar/>
-    <Welcome/>
-    <Dock/>
+    <main onClick={handleDesktopClick}>
+      <Wallpaper />
+      <DesktopContextMenu />
+      <Spotlight />
+      <Navbar />
+      <Welcome />
+      <Dock />
 
+      <Terminal />
+      <Safari />
+      <Resume />
+      <Finder />
+      <TextFile />
+      <ImageFile />
+      <Contact />
+      <Photos />
+      <Settings />
 
-    <Terminal/>
-    <Safari/>
-    <Resume/>
-    <Finder/>
-    <TextFile/>
-    <ImageFile/>
-    <Contact/>
+      <Home />
 
-   <Home/>
+      <SpotifyPlayer />
+      <Notifications />
+      <DesktopEffects onDesktopClick={registerRipple} />
+      <LockScreen />
     </main>
-    
-  )
-}
+  );
+};

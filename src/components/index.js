@@ -1,7 +1,15 @@
 import Navbar from "#components/navbar.jsx"
-import  {Welcome}  from "#components/welcome.jsx"
+import { Welcome } from "#components/welcome.jsx"
 import { Dock } from "#components/Dock.jsx"
 import WindowControls from "#components/WindowControls.jsx"
 import Home from "./Home"
+import Wallpaper from "./Wallpaper"
+import DesktopContextMenu from "./DesktopContextMenu"
+import Spotlight from "./Spotlight"
+import LockScreen from "./LockScreen"
+import WifiPopup from "./WifiPopup"
+import SpotifyPlayer from "./SpotifyPlayer"
+import Notifications from "./Notifications"
+import DesktopEffects from "./DesktopEffects"
 
-export {Navbar, Welcome, Dock, WindowControls, Home};
+export { Navbar, Welcome, Dock, WindowControls, Home, Wallpaper, DesktopContextMenu, Spotlight, LockScreen, WifiPopup, SpotifyPlayer, Notifications, DesktopEffects };

@@ -40,37 +40,43 @@ const navIcons = [
 const dockApps = [
   {
     id: "finder",
-    name: "Portfolio", // was "Finder"
+    name: "Portfolio",
     icon: "finder.png",
     canOpen: true,
   },
   {
     id: "safari",
-    name: "Articles", // was "Safari"
+    name: "Articles",
     icon: "safari.png",
     canOpen: true,
   },
   {
     id: "photos",
-    name: "Gallery", // was "Photos"
+    name: "Gallery",
     icon: "photos.png",
     canOpen: true,
   },
   {
     id: "contact",
-    name: "Contact", // or "Get in touch"
+    name: "Contact",
     icon: "contact.png",
     canOpen: true,
   },
   {
+    id: "settings",
+    name: "System Settings",
+    icon: "settings.svg",
+    canOpen: true,
+  },
+  {
     id: "terminal",
-    name: "Skills", // was "Terminal"
+    name: "Skills",
     icon: "terminal.png",
     canOpen: true,
   },
   {
     id: "trash",
-    name: "Archive", // was "Trash"
+    name: "Archive",
     icon: "trash.png",
     canOpen: false,
   },
@@ -223,14 +229,13 @@ const WORK_LOCATION = {
   icon: `${base}icons/work.svg`,
   kind: "folder",
   children: [
-    // ▶ Project 1
     {
       id: 5,
       name: "Nike Ecommerce Website Application",
       icon: `${base}images/folder.png`,
       kind: "folder",
-      position: "top-10 left-5", // icon position inside Finder
-      windowPosition: "top-[5vh] left-5", // optional: Finder window position
+      position: "top-10 left-5",
+      windowPosition: "top-[5vh] left-5",
       children: [
         {
           id: 1,
@@ -275,8 +280,6 @@ const WORK_LOCATION = {
         },
       ],
     },
-
-    // ▶ Project 2
     {
       id: 6,
       name: "AI Resume Analyzer",
@@ -328,8 +331,6 @@ const WORK_LOCATION = {
         },
       ],
     },
-
-    // ▶ Project 3
     {
       id: 7,
       name: "Food Delivery App",
@@ -349,7 +350,7 @@ const WORK_LOCATION = {
             "Our Food Delivery App is a fast and convenient way to order meals from your favorite restaurants.",
             "Instead of making calls or waiting in line, you can browse menus, customize orders, and track deliveries in real time.",
             "Think of it like having your favorite restaurants in your pocket—ready to deliver anytime, anywhere.",
-            "It’s built with React Native, so it works smoothly on both iOS and Android with a clean, modern design.",
+            "It's built with React Native, so it works smoothly on both iOS and Android with a clean, modern design.",
           ],
         },
         {
@@ -378,6 +379,48 @@ const WORK_LOCATION = {
           fileType: "fig",
           href: "https://google.com",
           position: "top-60 right-20",
+        },
+      ],
+    },
+    {
+      id: 8,
+      name: "Baby Shop Hub",
+      icon: `${base}images/folder.png`,
+      kind: "folder",
+      position: "top-28 right-40",
+      windowPosition: "top-[10vh] right-8",
+      children: [
+        {
+          id: 1,
+          name: "Baby Shop Hub.txt",
+          icon: `${base}images/txt.png`,
+          kind: "file",
+          fileType: "txt",
+          position: "top-5 left-10",
+          description: [
+            "Baby Shop Hub is a full-featured mobile e-commerce app designed for parents shopping for baby products.",
+            "Instead of browsing scattered websites, parents get a clean, curated experience with product categories, a smart cart, and secure checkout.",
+            "Think of it as a dedicated baby store in your pocket — fast, safe, and easy to navigate with one hand while holding your baby with the other.",
+            "Built with Flutter and Dart, the app runs natively on both iOS and Android with smooth 60fps animations and a warm, friendly UI.",
+          ],
+        },
+        {
+          id: 2,
+          name: "github.com",
+          icon: `${base}images/safari.png`,
+          kind: "file",
+          fileType: "url",
+          href: "https://github.com",
+          position: "top-5 right-10",
+        },
+        {
+          id: 3,
+          name: "Design.fig",
+          icon: `${base}images/plain.png`,
+          kind: "file",
+          fileType: "fig",
+          href: "https://figma.com",
+          position: "top-48 right-10",
         },
       ],
     },
@@ -428,9 +471,9 @@ const ABOUT_LOCATION = {
       subtitle: "Meet the Developer Behind the Code",
       image: `${base}images/adrian.jpg`,
       description: [
-        "Hey! I’m Adrian 👋, a web developer who enjoys building sleek, interactive websites that actually work well.",
+        "Hey! I'm Adrian 👋, a web developer who enjoys building sleek, interactive websites that actually work well.",
         "I specialize in JavaScript, React, and Next.js—and I love making things feel smooth, fast, and just a little bit delightful.",
-        "I’m big on clean UI, good UX, and writing code that doesn’t need a search party to debug.",
+        "I'm big on clean UI, good UX, and writing code that doesn't need a search party to debug.",
         "Outside of dev work, you'll find me tweaking layouts at 2AM, sipping overpriced coffee, or impulse-buying gadgets I absolutely convinced myself I needed 😅",
       ],
     },
@@ -450,8 +493,6 @@ const RESUME_LOCATION = {
       icon: `${base}images/pdf.png`,
       kind: "file",
       fileType: "pdf",
-      // you can add `href` if you want to open a hosted resume
-      // href: "/your/resume/path.pdf",
     },
   ],
 };
@@ -494,14 +535,50 @@ export const locations = {
 const INITIAL_Z_INDEX = 1000;
 
 const WINDOW_CONFIG = {
-  finder: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
-  contact: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
-  resume: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
-  safari: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
-  photos: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  finder:   { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  contact:  { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  resume:   { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  safari:   { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  photos:   { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   terminal: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
-  txtfile: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
-  imgfile: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  settings: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  txtfile:  { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  imgfile:  { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };
 
 export { INITIAL_Z_INDEX, WINDOW_CONFIG };
+
+const WALLPAPERS = [
+  {
+    id: 1,
+    label: "Tahoe Light",
+    type: "image",
+    src: `${base}images/low-res-tahoe-light.gif`,
+  },
+  {
+    id: 2,
+    label: "macOS Tahoe Dark",
+    type: "gif",
+    src: `${base}images/macOS_Tahoe_Dark.gif`,
+  },
+  {
+    id: 3,
+    label: "Ocean Waves",
+    type: "gif",
+    src: `${base}images/ocean-waves-wallpaper.gif`,
+  },
+  {
+    id: 4,
+    label: "Rain",
+    type: "gif",
+    src: `${base}images/rain-gif-desktop-wallpaper.gif`,
+  },
+  {
+    id: 5,
+    label: "Classic Desktop",
+    type: "image",
+    src: `${base}images/desktop-wallpaper.jpg`,
+  },
+];
+
+export { WALLPAPERS };

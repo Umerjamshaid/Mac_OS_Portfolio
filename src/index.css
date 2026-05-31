@@ -7,9 +7,6 @@ body {
   width: 100dvw;
   overflow: hidden;
   height: 100dvh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
 /*
@@ -269,32 +266,46 @@ body {
     }
   }
 
+  /* ── Contact / Mail window ── */
   #contact {
-    @apply max-w-2xl absolute top-60 left-5/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply absolute bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    width: 680px;
+    height: 480px;
+    top: 10vh;
+    left: 22%;
 
-    h2 {
-      @apply font-bold text-sm text-center w-full;
+    #window-header {
+      @apply flex items-center gap-3 px-4 py-2.5 bg-gray-50 border-b border-gray-200 select-none;
     }
+  }
 
-    h3 {
-      @apply text-xl font-semibold;
-    }
+  .mail-sidebar {
+    width: 170px;
+    flex-shrink: 0;
+    background: rgba(246, 246, 248, 0.98);
+    border-right: 1px solid rgba(0,0,0,0.07);
+    overflow-y: auto;
+  }
 
-    ul {
-      @apply flex items-center gap-3;
+  .mail-sidebar-btn {
+    @apply w-full flex items-center gap-2 px-2 py-1.5 rounded-lg transition-colors duration-100;
+    margin-bottom: 1px;
+  }
+  .mail-sidebar-btn:not(:disabled):hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  .mail-sidebar-btn--active {
+    background: rgba(59, 130, 246, 0.12) !important;
+    color: #2563eb;
+    font-weight: 600;
+  }
 
-      li {
-        @apply rounded-lg p-3 w-60 hover:-translate-y-0.5 hover:scale-105 origin-center transition-all duration-300;
-
-        a {
-          @apply space-y-5;
-        }
-
-        p {
-          @apply font-semibold text-sm text-white;
-        }
-      }
-    }
+  .mail-email-row {
+    @apply px-4 py-3 cursor-default select-none;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .mail-email-row--selected {
+    background: rgba(59, 130, 246, 0.06);
   }
 
   #photos {
@@ -411,6 +422,19 @@ body {
     }
   }
 
+  /* ── Settings Window ── */
+  #settings {
+    @apply absolute bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    width: 720px;
+    height: 500px;
+    top: 8vh;
+    left: 18%;
+
+    #window-header {
+      @apply flex items-center gap-3 px-4 py-2.5 bg-gray-50 border-b border-gray-200 select-none;
+    }
+  }
+
   #txtfile {
     @apply w-md absolute top-36 right-32 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
@@ -453,5 +477,512 @@ body {
         }
       }
     }
+  }
+
+  /* ── Photos Window ── */
+  #photos {
+    @apply absolute bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    width: 680px;
+    height: 480px;
+    top: 10vh;
+    left: 20%;
+
+    #window-header {
+      @apply flex items-center gap-3 px-4 py-2.5 bg-gray-50 border-b border-gray-200 select-none;
+    }
+
+    .photos-sidebar {
+      @apply w-44 flex-shrink-0 bg-gray-50 border-r border-gray-200 overflow-y-auto py-3 px-1;
+    }
+  }
+
+  /* ── Spotlight ── */
+  .spotlight-backdrop {
+    @apply fixed inset-0 flex items-start justify-center z-[9998];
+    padding-top: 12vh;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    animation: spotlight-fade-in 0.15s ease-out;
+  }
+
+  @keyframes spotlight-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .spotlight-panel {
+    width: 620px;
+    max-width: calc(100vw - 40px);
+    border-radius: 16px;
+    border: 0.5px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35), 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+    overflow: hidden;
+    animation: spotlight-slide-in 0.18s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+
+  @keyframes spotlight-slide-in {
+    from { opacity: 0; transform: scale(0.94) translateY(-10px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+  }
+
+  .spotlight-search-bar {
+    @apply flex items-center gap-3 px-4 py-3.5 border-b border-black/[0.06];
+  }
+
+  .spotlight-input {
+    @apply flex-1 bg-transparent text-lg text-gray-800 placeholder-gray-400 outline-none;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .spotlight-results {
+    @apply py-1 overflow-y-auto;
+    max-height: 380px;
+  }
+
+  .spotlight-group-label {
+    @apply text-[10px] font-semibold text-gray-400 uppercase tracking-wider px-4 pt-3 pb-1;
+  }
+
+  .spotlight-item {
+    @apply flex items-center gap-3 w-full px-4 py-2 transition-colors duration-75 cursor-default text-left;
+  }
+
+  .spotlight-item-active {
+    @apply bg-blue-500;
+  }
+
+  .spotlight-footer {
+    @apply flex items-center gap-4 px-4 py-2 border-t border-black/[0.06] text-[10px] text-gray-400;
+
+    kbd {
+      @apply inline-flex items-center justify-center bg-black/[0.06] text-gray-500 rounded px-1 py-0.5 text-[9px] font-mono mr-0.5;
+    }
+  }
+
+  /* ── Desktop Context Menu ── */
+  .context-menu {
+    position: fixed;
+    z-index: 9999;
+    min-width: 232px;
+    border-radius: 12px;
+    border: 0.5px solid rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+    padding: 6px;
+    user-select: none;
+    animation: context-menu-appear 0.12s ease-out;
+  }
+
+  @keyframes context-menu-appear {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .context-menu-label {
+    @apply text-xs font-semibold text-gray-400 px-3 py-1;
+  }
+
+  .context-menu-wallpaper-info {
+    @apply text-xs text-gray-400 px-3 py-1 italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .context-menu-separator {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.08);
+    margin: 4px 6px;
+  }
+
+  .context-menu-item {
+    @apply w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-gray-800 text-left cursor-default transition-colors duration-100;
+
+    &:hover {
+      @apply bg-blue-500 text-white;
+
+      .context-menu-arrow {
+        @apply text-white;
+      }
+    }
+  }
+
+  .context-menu-item-active {
+    @apply font-medium;
+  }
+
+  .context-menu-icon {
+    @apply text-base w-5 text-center flex-shrink-0;
+  }
+
+  .context-menu-arrow {
+    @apply ml-auto text-gray-400 text-xs;
+  }
+
+  .context-menu-checkmark {
+    @apply ml-auto text-blue-500 text-sm font-bold;
+  }
+
+  .context-menu-submenu-trigger {
+    position: relative;
+  }
+
+  .context-submenu {
+    position: absolute;
+    left: calc(100% + 4px);
+    top: -6px;
+    min-width: 200px;
+    border-radius: 12px;
+    border: 0.5px solid rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+    padding: 6px;
+    animation: context-menu-appear 0.1s ease-out;
+  }
+
+  .context-submenu-item {
+    .context-menu-checkmark {
+      color: #2563eb;
+    }
+
+    &:hover .context-menu-checkmark {
+      @apply text-white;
+    }
+  }
+
+  /* ─── Window Controls — make all 3 dots clickable & hover ─── */
+  #window-controls .minimize,
+  #window-controls .maximize {
+    @apply cursor-pointer;
+  }
+  #window-controls .close:hover    { filter: brightness(0.8); }
+  #window-controls .minimize:hover { filter: brightness(0.8); }
+  #window-controls .maximize:hover { filter: brightness(0.8); }
+  #window-controls .maximize-active {
+    @apply bg-[#2acb42];
+    box-shadow: 0 0 0 3px rgba(42, 203, 66, 0.35);
+  }
+
+  /* ─── Fullscreen window ─── */
+  .window-fullscreen {
+    position: fixed !important;
+    top: 30px !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 60px !important;
+    width: 100vw !important;
+    height: calc(100vh - 92px) !important;
+    border-radius: 0 !important;
+    transform: none !important;
+  }
+  .window-fullscreen > * {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* ─── Lock Screen ─── */
+  .lock-screen {
+    @apply fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-5 select-none cursor-default overflow-hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .lock-screen::before {
+    content: "";
+    @apply absolute inset-0;
+    backdrop-filter: blur(55px) saturate(180%);
+    -webkit-backdrop-filter: blur(55px) saturate(180%);
+    background: rgba(0, 0, 0, 0.38);
+  }
+  .lock-screen > * { @apply relative z-10; }
+
+  .lock-clock {
+    @apply text-center text-white;
+    margin-bottom: 0.25rem;
+  }
+  .lock-time {
+    font-size: 5.5rem;
+    font-weight: 200;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 28px rgba(0, 0, 0, 0.45);
+  }
+  .lock-date {
+    font-size: 1.15rem;
+    font-weight: 400;
+    margin-top: 0.3rem;
+    opacity: 0.9;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .lock-profile { @apply flex flex-col items-center gap-2.5; }
+  .lock-profile img {
+    @apply w-20 h-20 rounded-full object-cover shadow-xl;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+  }
+  .lock-name { @apply text-white text-sm font-medium tracking-wide; }
+
+  .lock-input-area { @apply flex flex-col items-center gap-3; }
+
+  .lock-dots {
+    @apply flex items-center justify-center gap-2 rounded-full px-6 py-3;
+    min-width: 200px;
+    min-height: 46px;
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    transition: border-color 0.25s ease;
+    cursor: text;
+  }
+  .lock-dots-error {
+    border-color: rgba(252, 100, 100, 0.75) !important;
+  }
+  .lock-dots-error .lock-dot { background-color: #fc9191 !important; }
+
+  .lock-dot {
+    @apply w-2.5 h-2.5 rounded-full bg-white flex-shrink-0;
+    animation: lockDotPop 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes lockDotPop {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+
+  .lock-placeholder { @apply text-white/45 text-sm; }
+  .lock-hint { @apply text-white/38 text-xs text-center; max-width: 240px; }
+
+  .lock-enter-btn {
+    @apply px-5 py-1.5 rounded-full text-sm font-medium text-white/80 cursor-pointer transition-all;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+  }
+  .lock-enter-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    @apply text-white;
+  }
+
+  /* ─── WiFi Popup ─── */
+  .wifi-popup {
+    position: fixed;
+    top: 32px;
+    right: 115px;
+    z-index: 9990;
+    width: 282px;
+    border-radius: 12px;
+    border: 0.5px solid rgba(255, 255, 255, 0.4);
+    background: rgba(248, 248, 248, 0.94);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+    overflow: hidden;
+    animation: wifiPopupIn 0.16s cubic-bezier(0.34, 1.3, 0.64, 1);
+  }
+  @keyframes wifiPopupIn {
+    from { opacity: 0; transform: scale(0.92) translateY(-6px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+  }
+  .wifi-popup-header {
+    @apply flex items-center justify-between px-4 py-3;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .wifi-popup-network {
+    @apply flex items-center gap-2.5 px-3 py-2 cursor-default transition-colors duration-100 rounded-lg;
+  }
+  .wifi-popup-network:hover { background: rgba(0, 0, 0, 0.04); }
+  .wifi-popup-footer {
+    @apply flex items-center justify-between px-4 py-2.5 text-xs;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  /* ─── Spotify Floating Player ─── */
+  .spotify-widget {
+    position: fixed;
+    bottom: 76px;
+    right: 16px;
+    z-index: 9980;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .spotify-toggle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #1db954;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(29, 185, 84, 0.45);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+    flex-shrink: 0;
+  }
+  .spotify-toggle:hover {
+    transform: scale(1.12);
+    box-shadow: 0 6px 24px rgba(29, 185, 84, 0.6);
+  }
+
+  .spotify-panel {
+    width: 300px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(18, 18, 18, 0.96);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 0 0.5px rgba(255,255,255,0.06) inset;
+    animation: spotify-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes spotify-in {
+    from { opacity: 0; transform: scale(0.82) translateY(18px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+  }
+
+  .spotify-panel-header {
+    @apply flex items-center justify-between px-4 py-3;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .spotify-logo {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  /* M3 Expressive fluid wave canvas */
+  .spotify-canvas-wrap {
+    background: rgba(255, 255, 255, 0.025);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    line-height: 0;
+  }
+  .spotify-wave-canvas {
+    display: block;
+    width: 300px;
+    height: 60px;
+  }
+
+  /* ─── Navbar icon tooltips ─── */
+  .navbar-tooltip {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(30, 30, 30, 0.88);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    padding: 3px 8px;
+    border-radius: 6px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: tooltip-in 0.12s ease;
+  }
+  .navbar-tooltip::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-bottom-color: rgba(30, 30, 30, 0.88);
+  }
+  @keyframes tooltip-in {
+    from { opacity: 0; transform: translateX(-50%) translateY(-3px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  /* ─── System Notifications ─── */
+  .notification-stack {
+    position: fixed;
+    top: 38px;
+    right: 12px;
+    z-index: 9985;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+  }
+
+  .notification-toast {
+    pointer-events: all;
+    width: 320px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border: 0.5px solid rgba(0, 0, 0, 0.10);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 1px 0 rgba(255,255,255,0.8) inset;
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+
+  .notification-icon-wrap {
+    @apply w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0;
+    background: linear-gradient(135deg, #4f8ef7, #3b5de7);
+    box-shadow: 0 4px 12px rgba(79, 142, 247, 0.4);
+  }
+
+  /* ─── Desktop Click Ripple ─── */
+  .desktop-ripple {
+    position: fixed;
+    width: 0;
+    height: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9960;
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
+    animation: desktop-ripple-expand 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes desktop-ripple-expand {
+    0%   { width: 0;     height: 0;     opacity: 0.8; }
+    100% { width: 120px; height: 120px; opacity: 0;   }
+  }
+
+  /* ─── Konami Achievement Toast ─── */
+  .achievement-toast {
+    position: fixed;
+    bottom: 88px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 0.5px solid rgba(255, 190, 0, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 215, 0, 0.15);
+    z-index: 9990;
+    transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+    /* keep the toast X-centered even after the translateY transition */
+    left: 50%;
+    margin-left: -160px;
+    width: 320px;
   }
 }
