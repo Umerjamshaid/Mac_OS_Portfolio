@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Briefcase, Eye, Bell, Cpu, X } from "lucide-react";
+import useDesktopStore from "#store/desktop";
 
 const QUEUE = [
   { id: 1,  delay: 5000,  Icon: Briefcase, app: "Availability", title: "Open to Work",         body: "Umer Jamshaid is actively looking for new opportunities."     },
@@ -150,6 +151,7 @@ const Notifications = () => {
   const [active, setActive] = useState([]);
   const [isHovered, setIsHovered] = useState(false);
   const timers = useRef([]);
+  const { isFocusModeEnabled } = useDesktopStore();
 
   useEffect(() => {
     QUEUE.forEach(({ id, delay, ...rest }) => {
@@ -169,7 +171,8 @@ const Notifications = () => {
     setActive([]);
   }, []);
 
-  if (active.length === 0) return null;
+  // Don't show notifications when Focus mode is enabled
+  if (active.length === 0 || isFocusModeEnabled) return null;
 
   const shouldStack = active.length > 1;
 

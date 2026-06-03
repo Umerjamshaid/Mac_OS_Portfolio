@@ -11,5 +11,6 @@ import WifiPopup from "./WifiPopup"
 import SpotifyPlayer from "./SpotifyPlayer"
 import Notifications from "./Notifications"
 import DesktopEffects from "./DesktopEffects"
+import ControlCenter from "./ControlCenter"
 
-export { Navbar, Welcome, Dock, WindowControls, Home, Wallpaper, DesktopContextMenu, Spotlight, LockScreen, WifiPopup, SpotifyPlayer, Notifications, DesktopEffects };
+export { Navbar, Welcome, Dock, WindowControls, Home, Wallpaper, DesktopContextMenu, Spotlight, LockScreen, WifiPopup, SpotifyPlayer, Notifications, DesktopEffects, ControlCenter };
