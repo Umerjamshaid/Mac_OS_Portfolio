@@ -69,7 +69,8 @@ const useWindowStore = create(
         const win = state.windows[windowKey];
         if (!win) return;
         win.isFullscreen = !win.isFullscreen;
-        if (win.isFullscreen) win.zIndex = state.nextZIndex++;
+        // Always bump zIndex when toggling fullscreen (entering or exiting)
+        win.zIndex = state.nextZIndex++;
       }),
   })),
 );

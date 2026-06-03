@@ -9,7 +9,9 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5000,
-    allowedHosts: true,
+    allowedHosts: process.env.DEV_ALLOWED_HOSTS 
+      ? process.env.DEV_ALLOWED_HOSTS.split(',').map(h => h.trim())
+      : ['localhost'],
   },
   resolve: {
     alias: {
