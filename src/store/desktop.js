@@ -3,6 +3,7 @@ import { immer } from "zustand/middleware/immer";
 import { WALLPAPERS } from "#constants";
 
 const STORAGE_KEY = "activeWallpaperId";
+const FOCUS_KEY = "focusModeEnabled";
 
 const getSavedId = () => {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -13,10 +14,16 @@ const getSavedId = () => {
   return WALLPAPERS[0].id;
 };
 
+const getSavedFocus = () => {
+  return localStorage.getItem(FOCUS_KEY) === "true";
+};
+
 const useDesktopStore = create(
   immer((set) => ({
     activeWallpaperId: getSavedId(),
     isSpotlightOpen: false,
+    isFocusModeEnabled: getSavedFocus(),
+    isControlCenterOpen: false,
 
     setWallpaper: (id) =>
       set((state) => {
@@ -54,6 +61,33 @@ const useDesktopStore = create(
     toggleSpotlight: () =>
       set((state) => {
         state.isSpotlightOpen = !state.isSpotlightOpen;
+      }),
+
+    toggleFocusMode: () =>
+      set((state) => {
+        state.isFocusModeEnabled = !state.isFocusModeEnabled;
+        localStorage.setItem(FOCUS_KEY, String(state.isFocusModeEnabled));
+      }),
+
+    setFocusMode: (enabled) =>
+      set((state) => {
+        state.isFocusModeEnabled = enabled;
+        localStorage.setItem(FOCUS_KEY, String(enabled));
+      }),
+
+    openControlCenter: () =>
+      set((state) => {
+        state.isControlCenterOpen = true;
+      }),
+
+    closeControlCenter: () =>
+      set((state) => {
+        state.isControlCenterOpen = false;
+      }),
+
+    toggleControlCenter: () =>
+      set((state) => {
+        state.isControlCenterOpen = !state.isControlCenterOpen;
       }),
   })),
 );

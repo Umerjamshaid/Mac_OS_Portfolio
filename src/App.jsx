@@ -1,5 +1,5 @@
 import { useCallback, useRef } from "react";
-import { Dock, Home, Navbar, Welcome, Wallpaper, DesktopContextMenu, Spotlight, LockScreen, SpotifyPlayer, Notifications, DesktopEffects } from "#components"
+import { Dock, Home, Navbar, Welcome, Wallpaper, DesktopContextMenu, Spotlight, LockScreen, SpotifyPlayer, Notifications, DesktopEffects, ControlCenter } from "#components"
 import { Draggable } from "gsap/all"
 import { Finder, Resume, Safari, Terminal, TextFile, ImageFile, Contact, Photos, Settings } from "#windows";
 import { gsap } from "gsap";
@@ -48,6 +48,7 @@ export const App = () => {
 
       <SpotifyPlayer />
       <Notifications />
+      <ControlCenter />
       <DesktopEffects onDesktopClick={registerRipple} />
       <LockScreen />
     </main>

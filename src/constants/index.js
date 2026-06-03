@@ -29,10 +29,14 @@ const navIcons = [
   },
   {
     id: 3,
-    img: `${base}icons/user.svg`,
+    img: `${base}icons/control-center.svg`,
   },
   {
     id: 4,
+    img: `${base}icons/user.svg`,
+  },
+  {
+    id: 5,
     img: `${base}icons/mode.svg`
   },
 ];
