@@ -100,8 +100,13 @@ const Lightbox = ({ photo, photos, onClose, onPrev, onNext }) => {
           <button
             key={p.id}
             onClick={() => {
-              if (i < idx) onPrev();
-              else if (i > idx) onNext();
+              // Jump directly to clicked thumbnail
+              const delta = i - idx;
+              if (delta > 0) {
+                for (let j = 0; j < delta; j++) onNext();
+              } else if (delta < 0) {
+                for (let j = 0; j < -delta; j++) onPrev();
+              }
             }}
             className={`flex-shrink-0 rounded-md overflow-hidden transition-all ${
               p.id === photo.id ? "ring-2 ring-white scale-110" : "opacity-50 hover:opacity-75"

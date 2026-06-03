@@ -73,25 +73,23 @@ const ProfileSection = () => (
     <div>
       <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Social Links</p>
       <div className="flex flex-col gap-2">
-        {[
-          { label: "GitHub",    href: "https://github.com",   Icon: Github,   color: "#24292e" },
-          { label: "LinkedIn",  href: "https://linkedin.com", Icon: Linkedin, color: "#0077b5" },
-          { label: "Twitter/X", href: "https://x.com",        Icon: Twitter,  color: "#1da1f2" },
-          { label: "Platform",  href: "https://jsmastery.com",Icon: Globe,    color: "#10b981" },
-        ].map(({ label, href, Icon, color }) => (
-          <a
-            key={label}
-            href={href}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors group"
-          >
-            <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background: color + "18" }}>
-              <Icon size={14} style={{ color }} />
-            </div>
-            <span className="text-sm text-gray-600 group-hover:text-gray-800">{label}</span>
-          </a>
-        ))}
+        {socials.map((social) => {
+          const IconComponent = SOCIAL_ICONS[social.text] || Globe;
+          return (
+            <a
+              key={social.id}
+              href={social.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors group"
+            >
+              <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background: social.bg + "18" }}>
+                <IconComponent size={14} style={{ color: social.bg }} />
+              </div>
+              <span className="text-sm text-gray-600 group-hover:text-gray-800">{social.text}</span>
+            </a>
+          );
+        })}
       </div>
     </div>
 
@@ -121,6 +119,7 @@ const WallpaperSection = () => {
       <div className="grid grid-cols-2 gap-4">
         {WALLPAPERS.map((wp) => {
           const active = wp.id === activeWallpaperId;
+          const isVideo = wp.type === "video";
           return (
             <button
               key={wp.id}
@@ -129,7 +128,18 @@ const WallpaperSection = () => {
                 active ? "ring-2 ring-blue-500 ring-offset-2" : "ring-1 ring-gray-200 hover:ring-gray-300"
               }`}
             >
-              <img src={wp.src} alt={wp.label} className="w-full h-full object-cover" />
+              {isVideo ? (
+                <video 
+                  src={wp.src} 
+                  className="w-full h-full object-cover" 
+                  muted 
+                  autoPlay 
+                  loop 
+                  playsInline 
+                />
+              ) : (
+                <img src={wp.src} alt={wp.label} className="w-full h-full object-cover" />
+              )}
               <div className={`absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors`} />
               {active && (
                 <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">

@@ -12,7 +12,7 @@ const ICON_LABELS = {
   4: "Appearance",
 };
 
-const navbar = () => {
+const Navbar = () => {
   const { openWindow } = useWindowStore();
   const { toggleSpotlight, activeWallpaperId, setWallpaper } = useDesktopStore();
   const [time, setTime]       = useState(dayjs());
@@ -95,4 +95,4 @@ const navbar = () => {
   )
 }
 
-export default navbar
+export default Navbar
