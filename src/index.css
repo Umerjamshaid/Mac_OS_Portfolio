@@ -913,35 +913,202 @@ body {
     to   { opacity: 1; transform: translateX(-50%) translateY(0); }
   }
 
-  /* ─── System Notifications ─── */
-  .notification-stack {
+  /* ─── macOS Native Notifications ─── */
+  .macos-notification-stack {
     position: fixed;
-    top: 38px;
-    right: 12px;
+    top: 36px;
+    right: 8px;
     z-index: 9985;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    pointer-events: none;
+    align-items: flex-end;
+    gap: 0;
+    pointer-events: auto;
   }
 
-  .notification-toast {
-    pointer-events: all;
-    width: 320px;
-    padding: 12px 14px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(28px) saturate(200%);
-    -webkit-backdrop-filter: blur(28px) saturate(200%);
-    border: 0.5px solid rgba(0, 0, 0, 0.10);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 1px 0 rgba(255,255,255,0.8) inset;
-    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+  .macos-notification-clear-all {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: none;
+    border-radius: 6px;
+    padding: 4px 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    animation: macos-fade-in 0.2s ease;
+  }
+  .macos-notification-clear-all:hover {
+    background: rgba(255, 255, 255, 0.9);
+    color: rgba(0, 0, 0, 0.7);
   }
 
-  .notification-icon-wrap {
-    @apply w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0;
-    background: linear-gradient(135deg, #4f8ef7, #3b5de7);
-    box-shadow: 0 4px 12px rgba(79, 142, 247, 0.4);
+  .macos-notification-list {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .macos-notification-list.collapsed {
+    gap: 0;
+  }
+  .macos-notification-list.expanded {
+    gap: 10px;
+  }
+
+  .macos-notification {
+    position: relative;
+    width: 348px;
+    padding: 10px 12px;
+    border-radius: 16px;
+    background: rgba(246, 246, 246, 0.88);
+    backdrop-filter: blur(50px) saturate(180%);
+    -webkit-backdrop-filter: blur(50px) saturate(180%);
+    border: 0.5px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 0 0 0.5px rgba(0, 0, 0, 0.04),
+      0 2px 8px rgba(0, 0, 0, 0.08),
+      0 8px 24px rgba(0, 0, 0, 0.12),
+      inset 0 0.5px 0 rgba(255, 255, 255, 0.8);
+    transition:
+      opacity 0.3s ease,
+      transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    pointer-events: auto;
+  }
+
+  .macos-notification-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* App icon - macOS style rounded square */
+  .macos-notification-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: linear-gradient(180deg, #5b9cf4 0%, #2d7cf6 100%);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    color: white;
+  }
+
+  .macos-notification-text {
+    flex: 1;
+    min-width: 0;
+    padding-right: 8px;
+  }
+
+  .macos-notification-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2px;
+  }
+
+  .macos-notification-app {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
+    letter-spacing: -0.01em;
+  }
+
+  .macos-notification-time {
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+  .macos-notification-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 1.3;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .macos-notification-body {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.55);
+    line-height: 1.35;
+    margin: 2px 0 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Close button - macOS style (hidden until hover) */
+  .macos-notification-close {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(142, 142, 147, 0.95);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.15s ease, transform 0.15s ease, background 0.1s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+  }
+  .macos-notification:hover .macos-notification-close {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .macos-notification-close:hover {
+    background: rgba(120, 120, 125, 1);
+  }
+  .macos-notification-close:active {
+    background: rgba(100, 100, 105, 1);
+    transform: scale(0.95);
+  }
+
+  /* Stacked notification badge */
+  .macos-notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background: rgba(142, 142, 147, 0.95);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    animation: macos-badge-pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes macos-badge-pop {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes macos-fade-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   /* ─── Desktop Click Ripple ─── */
