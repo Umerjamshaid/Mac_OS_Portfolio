@@ -20,6 +20,10 @@ const formatTimeAgo = (timestamp) => {
 const Notification = ({ Icon, app, title, body, timestamp, onDismiss, isStacked, stackIndex, totalStacked, isHovered }) => {
   const [visible, setVisible] = useState(false);
   const [timeAgo, setTimeAgo] = useState("now");
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragX, setDragX] = useState(0);
+  const startXRef = useRef(0);
+  const notificationRef = useRef(null);
 
   useEffect(() => {
     // mount -> slide in
@@ -38,6 +42,41 @@ const Notification = ({ Icon, app, title, body, timestamp, onDismiss, isStacked,
     return () => clearInterval(interval);
   }, [timestamp]);
 
+  // macOS swipe-to-dismiss gesture handlers
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    startXRef.current = e.clientX - dragX;
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    const newX = e.clientX - startXRef.current;
+    // Only allow dragging to the right (positive direction) like macOS
+    if (newX > 0) {
+      setDragX(newX);
+    }
+  };
+
+  const handleMouseUp = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    
+    // If dragged more than 100px to the right, dismiss
+    if (dragX > 100) {
+      setVisible(false);
+      setTimeout(onDismiss, 350);
+    } else {
+      // Snap back with animation
+      setDragX(0);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (isDragging) {
+      handleMouseUp();
+    }
+  };
+
   const dismiss = (e) => {
     e.stopPropagation();
     setVisible(false);
@@ -45,19 +84,30 @@ const Notification = ({ Icon, app, title, body, timestamp, onDismiss, isStacked,
   };
 
   // Calculate stacked positioning (macOS style stacking when collapsed)
-  const stackOffset = isStacked && !isHovered ? stackIndex * 6 : 0;
-  const stackScale = isStacked && !isHovered ? 1 - (stackIndex * 0.03) : 1;
-  const stackOpacity = isStacked && !isHovered ? 1 - (stackIndex * 0.15) : 1;
+  const stackOffset = isStacked && !isHovered ? stackIndex * 8 : 0;
+  const stackScale = isStacked && !isHovered ? 1 - (stackIndex * 0.04) : 1;
+  const stackOpacity = isStacked && !isHovered ? 1 - (stackIndex * 0.2) : 1;
+
+  // Calculate drag opacity (fades as you drag to dismiss)
+  const dragOpacity = Math.max(0, 1 - (dragX / 200));
 
   return (
     <div
-      className="macos-notification"
+      ref={notificationRef}
+      className={`macos-notification ${isDragging ? 'dragging' : ''}`}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
       style={{
-        opacity: visible ? stackOpacity : 0,
+        opacity: visible ? stackOpacity * dragOpacity : 0,
         transform: visible
-          ? `translateX(0) translateY(${stackOffset}px) scale(${stackScale})`
+          ? `translateX(${dragX}px) translateY(${stackOffset}px) scale(${stackScale})`
           : "translateX(calc(100% + 20px)) translateY(0) scale(1)",
         zIndex: 100 - stackIndex,
+        transition: isDragging 
+          ? 'opacity 0.1s ease' 
+          : 'opacity 0.3s ease, transform 0.35s cubic-bezier(0.32, 0.72, 0, 1)',
       }}
     >
       {/* Close button - appears on hover (macOS style) */}
@@ -72,7 +122,7 @@ const Notification = ({ Icon, app, title, body, timestamp, onDismiss, isStacked,
       <div className="macos-notification-content">
         {/* App icon */}
         <div className="macos-notification-icon">
-          <Icon size={18} strokeWidth={1.5} />
+          <Icon size={20} strokeWidth={1.5} />
         </div>
 
         {/* Text content */}
