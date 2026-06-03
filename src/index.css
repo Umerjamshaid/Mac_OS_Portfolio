@@ -671,6 +671,12 @@ body {
   #window-controls .close:hover    { filter: brightness(0.8); }
   #window-controls .minimize:hover { filter: brightness(0.8); }
   #window-controls .maximize:hover { filter: brightness(0.8); }
+  #window-controls .close:focus-visible,
+  #window-controls .minimize:focus-visible,
+  #window-controls .maximize:focus-visible {
+    outline: 2px solid rgba(0, 122, 255, 0.6);
+    outline-offset: 2px;
+  }
   #window-controls .maximize-active {
     @apply bg-[#2acb42];
     box-shadow: 0 0 0 3px rgba(42, 203, 66, 0.35);
@@ -1136,7 +1142,6 @@ body {
     position: fixed;
     bottom: 88px;
     left: 50%;
-    transform: translateX(-50%) translateY(20px);
     display: flex;
     align-items: center;
     gap: 14px;
@@ -1149,9 +1154,6 @@ body {
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 215, 0, 0.15);
     z-index: 9990;
     transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
-    /* keep the toast X-centered even after the translateY transition */
-    left: 50%;
-    margin-left: -160px;
     width: 320px;
   }
 }
