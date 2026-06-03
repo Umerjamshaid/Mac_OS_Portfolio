@@ -37,8 +37,11 @@ const WifiPopup = ({ onClose }) => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) onClose();
     };
-    setTimeout(() => document.addEventListener("mousedown", handler), 50);
-    return () => document.removeEventListener("mousedown", handler);
+    const timeoutId = setTimeout(() => document.addEventListener("mousedown", handler), 50);
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener("mousedown", handler);
+    };
   }, [onClose]);
 
   return (

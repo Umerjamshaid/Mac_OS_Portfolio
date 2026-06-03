@@ -389,6 +389,7 @@ const WORK_LOCATION = {
       kind: "folder",
       position: "top-28 right-40",
       windowPosition: "top-[10vh] right-8",
+      image: `${base}images/projects/baby-shop-hub.png`,
       children: [
         {
           id: 1,
@@ -552,7 +553,7 @@ const WALLPAPERS = [
   {
     id: 1,
     label: "Tahoe Light",
-    type: "image",
+    type: "gif",
     src: `${base}images/low-res-tahoe-light.gif`,
   },
   {

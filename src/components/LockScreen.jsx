@@ -32,11 +32,11 @@ const LockScreen = () => {
     if (isLocked) setTimeout(() => inputRef.current?.focus(), 600);
   }, [isLocked]);
 
-  // Wake-up fade-in on mount
+  // Wake-up fade-in when locking state changes
   useGSAP(() => {
     if (!isLocked) return;
     gsap.from(containerRef.current, { opacity: 0, duration: 1.2, ease: "power2.out" });
-  }, []);
+  }, [isLocked]);
 
   // Pop-in for each new dot
   useGSAP(() => {
