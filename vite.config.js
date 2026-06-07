@@ -5,6 +5,7 @@ import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
 export default defineConfig({
+  base: '/Mac_OS_Portfolio/',
   plugins: [react(), tailwindcss()],
   server: {
     host: '0.0.0.0',
