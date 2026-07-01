@@ -108,6 +108,8 @@ body {
     height: 58px;
     border-radius: 12px;
     will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
     @apply cursor-pointer transition-shadow duration-200;
 
     img {
@@ -294,6 +296,13 @@ body {
   .mail-sidebar-btn:not(:disabled):hover {
     background: rgba(0, 0, 0, 0.05);
   }
+  .mail-sidebar-btn:not(:disabled):active {
+    background: rgba(0, 0, 0, 0.08);
+  }
+  .mail-sidebar-btn:focus-visible {
+    outline: 2px solid rgba(59, 130, 246, 0.5);
+    outline-offset: 1px;
+  }
   .mail-sidebar-btn--active {
     background: rgba(59, 130, 246, 0.12) !important;
     color: #2563eb;
@@ -306,6 +315,162 @@ body {
   }
   .mail-email-row--selected {
     background: rgba(59, 130, 246, 0.06);
+  }
+
+  /* ── Mobile Projects window ── */
+  #mobileapps {
+    @apply absolute bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    width: 760px;
+    height: 560px;
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 24px);
+    top: 8vh;
+    left: 18%;
+
+    #window-header {
+      @apply flex items-center gap-3 px-4 py-2.5 bg-gray-50 border-b border-gray-200 select-none flex-shrink-0;
+    }
+  }
+
+  .ma-sidebar {
+    width: 200px;
+    flex-shrink: 0;
+    min-width: 0;
+    background: rgba(246, 246, 248, 0.98);
+    border-right: 1px solid rgba(0, 0, 0, 0.07);
+    overflow-y: auto;
+  }
+
+  .ma-sidebar-item {
+    @apply w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg transition-colors duration-100 text-left;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .ma-sidebar-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  .ma-sidebar-item--active {
+    background: rgba(59, 130, 246, 0.12) !important;
+  }
+
+  .ma-detail {
+    flex: 1 1 0%;
+    min-width: 0;
+    overflow-y: auto;
+  }
+
+  .ma-split {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    min-width: 0;
+  }
+
+  .ma-info-col {
+    flex: 1 1 260px;
+    min-width: 0;
+  }
+
+  .ma-phone-col {
+    flex: 0 1 220px;
+    min-width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ma-chip {
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium;
+    background: rgba(0, 0, 0, 0.06);
+    color: rgba(0, 0, 0, 0.6);
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ma-status-chip {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+    background: rgba(52, 199, 89, 0.12);
+    color: #1a8a3e;
+    white-space: nowrap;
+  }
+
+  .ma-github-badge {
+    @apply inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold text-white transition-transform duration-150;
+    background: #1c1c1e;
+    max-width: 100%;
+  }
+  .ma-github-badge:hover {
+    transform: translateY(-1px);
+    background: #000;
+  }
+  .ma-github-badge span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ma-phone-frame {
+    position: relative;
+    width: 100%;
+    max-width: 190px;
+    aspect-ratio: 9 / 19.5;
+    background: #111;
+    border-radius: 34px;
+    padding: 10px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28), inset 0 0 0 2px rgba(255, 255, 255, 0.06);
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .ma-phone-screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .ma-phone-screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #fff;
+  }
+
+  .ma-phone-notch {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 38%;
+    height: 18px;
+    background: #111;
+    border-radius: 10px;
+    z-index: 2;
+  }
+
+  @media (max-width: 620px) {
+    #mobileapps {
+      width: calc(100vw - 16px);
+      left: 8px;
+      top: 4vh;
+    }
+
+    .ma-sidebar {
+      width: 140px;
+    }
+
+    .ma-split {
+      flex-direction: column;
+    }
+
+    .ma-phone-col {
+      order: -1;
+      flex-basis: auto;
+    }
   }
 
   #photos {
@@ -791,10 +956,20 @@ body {
     box-shadow: 0 4px 20px rgba(29, 185, 84, 0.45);
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
     flex-shrink: 0;
+    transform: translateZ(0);
+    will-change: transform;
   }
   .spotify-toggle:hover {
-    transform: scale(1.12);
+    transform: scale(1.12) translateZ(0);
     box-shadow: 0 6px 24px rgba(29, 185, 84, 0.6);
+  }
+  .spotify-toggle:active {
+    transform: scale(1.02) translateZ(0);
+  }
+  .spotify-toggle-logo {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
   }
 
   .spotify-panel {
@@ -1109,8 +1284,10 @@ body {
   .control-center-panel {
     position: fixed;
     top: 36px;
-    right: 90px;
+    right: clamp(8px, 6vw, 90px);
     width: 320px;
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 48px);
     padding: 14px;
     border-radius: 14px;
     background: rgba(245, 245, 247, 0.75);
@@ -1127,6 +1304,21 @@ body {
     gap: 10px;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     animation: cc-slide-in 0.2s ease-out;
+    overflow-y: auto;
+    box-sizing: border-box;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+  }
+
+  @media (max-width: 480px) {
+    .control-center-panel {
+      width: calc(100vw - 16px);
+      right: 8px;
+    }
+
+    .cc-row {
+      flex-direction: column;
+    }
   }
 
   @keyframes cc-slide-in {
@@ -1142,6 +1334,7 @@ body {
 
   .cc-row {
     display: flex;
+    align-items: stretch;
     gap: 10px;
   }
 
@@ -1149,7 +1342,9 @@ body {
     background: rgba(255, 255, 255, 0.6);
     border-radius: 12px;
     padding: 12px;
-    flex: 1;
+    flex: 1 1 0%;
+    min-width: 0;
+    box-sizing: border-box;
   }
 
   /* Connectivity module */
@@ -1171,6 +1366,8 @@ body {
     cursor: pointer;
     transition: background 0.15s ease;
     width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     text-align: left;
   }
   .cc-toggle-btn:hover {
@@ -1180,6 +1377,7 @@ body {
   .cc-toggle-icon {
     width: 28px;
     height: 28px;
+    flex-shrink: 0;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.08);
     display: flex;
@@ -1197,15 +1395,23 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1px;
+    min-width: 0;
+    overflow: hidden;
   }
   .cc-toggle-label {
     font-size: 12px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.85);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .cc-toggle-status {
     font-size: 10px;
     color: rgba(0, 0, 0, 0.45);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /* Focus module */
@@ -1228,6 +1434,8 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
     width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     position: relative;
   }
   .cc-focus-btn:hover {
@@ -1240,6 +1448,7 @@ body {
   .cc-focus-icon {
     width: 36px;
     height: 36px;
+    flex-shrink: 0;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.08);
     display: flex;
@@ -1368,6 +1577,7 @@ body {
   .cc-now-playing-art {
     width: 40px;
     height: 40px;
+    flex-shrink: 0;
     border-radius: 6px;
     background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
     display: flex;
@@ -1378,6 +1588,7 @@ body {
 
   .cc-now-playing-info {
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -1387,14 +1598,21 @@ body {
     font-size: 12px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.85);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .cc-now-playing-artist {
     font-size: 11px;
     color: rgba(0, 0, 0, 0.45);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .cc-now-playing-chevron {
     color: rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
   }
 }

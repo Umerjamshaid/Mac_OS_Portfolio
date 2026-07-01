@@ -47,7 +47,6 @@ const setupTextHover = (Container, type) => {
             const { left: l, width: w } = letter.getBoundingClientRect();
             const distance = Math.abs(pendingX - (l - containerLeft + w / 2));
             const intensity = Math.exp(-(distance ** 2) / 20000);
-
             animateLetter(letter, min + (max - min) * intensity);
         });
     };
@@ -59,25 +58,30 @@ const setupTextHover = (Container, type) => {
         }
     };
 
-    const handleMouseLeave = () =>
+    const handleMouseLeave = () => {
+        if (rafId !== null) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+        }
         letters.forEach((letter) => animateLetter(letter, base, 0.3));
+    };
 
     const handleResize = () => {
         measure();
     };
 
     measure();
-    Container.addEventListener("mousemove", handleMouseMove);
+    Container.addEventListener("mousemove", handleMouseMove, { passive: true });
     Container.addEventListener("mouseleave", handleMouseLeave);
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
 
     return () => {
-        Container.removeEventListener("mousemove", handleMouseMove);
-        Container.removeEventListener("mouseleave", handleMouseLeave);
-        window.removeEventListener("resize", handleResize);
         if (rafId !== null) {
             cancelAnimationFrame(rafId);
         }
+        Container.removeEventListener("mousemove", handleMouseMove);
+        Container.removeEventListener("mouseleave", handleMouseLeave);
+        window.removeEventListener("resize", handleResize);
     };
 };
 

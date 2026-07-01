@@ -73,6 +73,12 @@ const dockApps = [
     canOpen: true,
   },
   {
+    id: "mobileapps",
+    name: "Mobile Projects",
+    icon: "mobile-apps.svg",
+    canOpen: true,
+  },
+  {
     id: "terminal",
     name: "Skills",
     icon: "terminal.png",
@@ -215,6 +221,37 @@ const gallery = [
   },
 ];
 
+const MOBILE_APPS = [
+  {
+    id: "baby-shop-hub",
+    name: "Baby Shop Hub",
+    tagline: "Mobile e-commerce for parents on the go",
+    status: "Live",
+    stack: ["Flutter", "Dart", "iOS", "Android"],
+    description: [
+      "Baby Shop Hub is a full-featured mobile e-commerce app designed for parents shopping for baby products.",
+      "Instead of browsing scattered websites, parents get a clean, curated experience with product categories, a smart cart, and secure checkout.",
+      "Built with Flutter and Dart, the app runs natively on both iOS and Android with smooth 60fps animations and a warm, friendly UI.",
+    ],
+    screenshot: `${base}images/gal1.png`,
+    githubUrl: "https://github.com/Umerjamshaid/Mac_OS_Portfolio",
+  },
+  {
+    id: "food-delivery-app",
+    name: "Food Delivery App",
+    tagline: "Order food from your favorite spots in minutes",
+    status: "Live",
+    stack: ["Flutter", "Dart", "iOS", "Android"],
+    description: [
+      "A fast and convenient way to order meals from your favorite restaurants — browse menus, customize orders, and track deliveries in real time.",
+      "Think of it like having your favorite restaurants in your pocket, ready to deliver anytime, anywhere.",
+      "Built with a clean, modern Flutter UI that stays smooth and responsive across devices.",
+    ],
+    screenshot: `${base}images/project-3.png`,
+    githubUrl: "https://github.com/Umerjamshaid/Mac_OS_Portfolio",
+  },
+];
+
 export {
   navLinks,
   navIcons,
@@ -224,6 +261,7 @@ export {
   socials,
   photosLinks,
   gallery,
+  MOBILE_APPS,
 };
 
 const WORK_LOCATION = {
@@ -547,6 +585,7 @@ const WINDOW_CONFIG = {
   photos:   { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   terminal: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   settings: { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
+  mobileapps: { isOpen: true, zIndex: INITIAL_Z_INDEX, data: null },
   txtfile:  { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
   imgfile:  { isOpen: false, zIndex: INITIAL_Z_INDEX, data: null },
 };

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Music2, X, ChevronDown } from "lucide-react";
+import { X, ChevronDown } from "lucide-react";
 
 // Replace with your own Spotify playlist URL ID
 const SPOTIFY_EMBED =
@@ -133,9 +133,10 @@ const SpotifyPlayer = () => {
       <button
         className="spotify-toggle"
         onClick={() => setIsOpen((v) => !v)}
-        title={isOpen ? "Hide Player" : "Open Music Player"}
+        aria-label={isOpen ? "Hide Spotify player" : "Open Spotify player"}
+        title={isOpen ? "Hide Player" : "Open Spotify"}
       >
-        {isOpen ? <X size={18} color="white" /> : <Music2 size={18} color="white" />}
+        {isOpen ? <X size={18} color="white" /> : <SpotifyLogo className="spotify-toggle-logo" />}
       </button>
     </div>
   );
