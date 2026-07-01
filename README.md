@@ -55,6 +55,7 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Latest Updates](#latest-updates)
 - [Key Features](#key-features)
 - [Tech Stack](#tech-stack)
 - [Project Preview](#project-preview)
@@ -68,6 +69,14 @@
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
+
+---
+
+## Latest Updates
+
+- Updated GitHub Pages deployment support with proper base path handling for `vite.config.js`.
+- Improved GitHub Actions workflow and deployment pipeline for Node.js 20 compatibility.
+- Fixed package manager cache handling to ensure reliable builds on CI.
 
 ---
 
