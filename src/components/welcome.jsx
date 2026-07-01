@@ -1,5 +1,4 @@
-import { Container, Weight } from "lucide-react";
-import React, { use, useRef } from "react";
+import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -25,6 +24,9 @@ const setupTextHover = (Container, type) => {
 
     const letters = Container.querySelectorAll("span");
     const { min, max, default: base } = FONT_WEIGHTS[type];
+    let containerLeft = 0;
+    let pendingX = 0;
+    let rafId = null;
 
     const animateLetter = (letter, weight, duration = 0.25) => {
         return gsap.to(letter, {
@@ -34,28 +36,48 @@ const setupTextHover = (Container, type) => {
         });
     };
 
-    const handleMouseMove = (e) => {
-        const { left } = Container.getBoundingClientRect();
-        const mouseX = e.clientX - left;
+    const measure = () => {
+        containerLeft = Container.getBoundingClientRect().left;
+    };
+
+    const applyHover = () => {
+        rafId = null;
 
         letters.forEach((letter) => {
             const { left: l, width: w } = letter.getBoundingClientRect();
-            const distance = Math.abs(mouseX - (l - left + w / 2));
+            const distance = Math.abs(pendingX - (l - containerLeft + w / 2));
             const intensity = Math.exp(-(distance ** 2) / 20000);
 
             animateLetter(letter, min + (max - min) * intensity);
         });
     };
+
+    const handleMouseMove = (e) => {
+        pendingX = e.clientX - containerLeft;
+        if (rafId === null) {
+            rafId = requestAnimationFrame(applyHover);
+        }
+    };
+
     const handleMouseLeave = () =>
         letters.forEach((letter) => animateLetter(letter, base, 0.3));
-    {
-    }
+
+    const handleResize = () => {
+        measure();
+    };
+
+    measure();
     Container.addEventListener("mousemove", handleMouseMove);
     Container.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("resize", handleResize);
 
     return () => {
         Container.removeEventListener("mousemove", handleMouseMove);
         Container.removeEventListener("mouseleave", handleMouseLeave);
+        window.removeEventListener("resize", handleResize);
+        if (rafId !== null) {
+            cancelAnimationFrame(rafId);
+        }
     };
 };
 

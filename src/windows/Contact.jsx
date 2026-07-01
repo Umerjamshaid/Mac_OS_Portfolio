@@ -108,8 +108,10 @@ const FIELDS = [
   { key: "subject", label: "Subject",  Icon: MessageSquare, type: "text",  ph: "What's on your mind?" },
 ];
 
+const EMPTY_FORM = { name: "", email: "", subject: "", message: "" };
+
 const ComposeView = () => {
-  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [form, setForm] = useState(EMPTY_FORM);
   const [phase, setPhase] = useState("idle"); // idle | sending | sent
   const [eggFired, setEggFired] = useState(false);
   const canvasRef = useRef(null);
@@ -123,12 +125,18 @@ const ComposeView = () => {
     }
   }, [form.message, eggFired]);
 
+  const clearAll = () => {
+    setForm({ ...EMPTY_FORM });
+    setPhase("idle");
+    setEggFired(false);
+  };
+
   const handleSend = () => {
     if (!form.name || !form.email || !form.message) return;
     setPhase("sending");
     setTimeout(() => {
       setPhase("sent");
-      setTimeout(() => { setForm({ name: "", email: "", subject: "", message: "" }); setPhase("idle"); setEggFired(false); }, 2500);
+      setTimeout(() => { clearAll(); }, 2500);
     }, 1300);
   };
 
