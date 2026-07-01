@@ -1,0 +1,30 @@
+Context:
+- Review the core web application layout files, specifically focusing on the desktop/dock layout, Control Center widget, Contact window module, and global rendering styles.
+- Target files: Dock/Navigation configuration files, Control Center UI widgets, Contact view models/components, and global animation/CSS configurations.
+
+Objective:
+Resolve critical browser performance bottlenecks, fix viewport responsiveness issues in the Control Center, complete the implementation of interactive states within the Contact window, and refactor the Dock component layout.
+
+Specific Tasks:
+
+1. Performance Optimization (Fix Browser Lag):
+   - Investigate and profile the primary causes of heavy rendering lag or frame-rate drops when running in a web browser.
+   - Look for unoptimized layout repaints, resource-heavy animations, unthrottled resize listeners, or structural memory leaks. 
+   - Implement optimizations such as CSS hardware acceleration (`transform: translateZ(0)`), debouncing active event handlers, or wrapping static widget trees to prevent unneeded re-renders.
+
+2. UI Responsiveness (Control Center Audit):
+   - Refactor the layout constraints inside the Control Center widget to fix clipping, overlapping, or bad scaling on changing viewport sizes.
+   - Use adaptive scaling, flex layouts, or precise constraints so it retains its design proportions on varying screen resolutions.
+
+3. Feature Interactivity (Contact Window Completion):
+   - Locate the currently disabled or placeholder UI sub-components inside the Contact window view.
+   - Activate form controls, inputs, and button states. Supply distinct interactive properties (e.g., active focus states, hover responses, or clear button callbacks) so the interface responds normally to user input.
+
+4. Dock UI Modification (Spotify Integration):
+   - Locate the bottom-right layout definition where the current music logo/shortcut resides.
+   - Swap out the existing music logo asset/widget with a updated Spotify launcher shortcut icon.
+   - Ensure it matches the sizing, margins, and active hover animations used by the other items in the dock array.
+
+Constraints:
+- Maintain the visual design aesthetics and token values (`WC.colors` or equivalent design tokens) established across the system.
+- Do not add external heavy animation dependencies; optimize existing logic to guarantee lightweight browser performance.

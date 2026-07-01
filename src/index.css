@@ -108,6 +108,8 @@ body {
     height: 58px;
     border-radius: 12px;
     will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
     @apply cursor-pointer transition-shadow duration-200;
 
     img {
@@ -293,6 +295,13 @@ body {
   }
   .mail-sidebar-btn:not(:disabled):hover {
     background: rgba(0, 0, 0, 0.05);
+  }
+  .mail-sidebar-btn:not(:disabled):active {
+    background: rgba(0, 0, 0, 0.08);
+  }
+  .mail-sidebar-btn:focus-visible {
+    outline: 2px solid rgba(59, 130, 246, 0.5);
+    outline-offset: 1px;
   }
   .mail-sidebar-btn--active {
     background: rgba(59, 130, 246, 0.12) !important;
@@ -791,10 +800,20 @@ body {
     box-shadow: 0 4px 20px rgba(29, 185, 84, 0.45);
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
     flex-shrink: 0;
+    transform: translateZ(0);
+    will-change: transform;
   }
   .spotify-toggle:hover {
-    transform: scale(1.12);
+    transform: scale(1.12) translateZ(0);
     box-shadow: 0 6px 24px rgba(29, 185, 84, 0.6);
+  }
+  .spotify-toggle:active {
+    transform: scale(1.02) translateZ(0);
+  }
+  .spotify-toggle-logo {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
   }
 
   .spotify-panel {
@@ -1109,8 +1128,10 @@ body {
   .control-center-panel {
     position: fixed;
     top: 36px;
-    right: 90px;
+    right: clamp(8px, 6vw, 90px);
     width: 320px;
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 48px);
     padding: 14px;
     border-radius: 14px;
     background: rgba(245, 245, 247, 0.75);
@@ -1127,6 +1148,21 @@ body {
     gap: 10px;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     animation: cc-slide-in 0.2s ease-out;
+    overflow-y: auto;
+    box-sizing: border-box;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+  }
+
+  @media (max-width: 480px) {
+    .control-center-panel {
+      width: calc(100vw - 16px);
+      right: 8px;
+    }
+
+    .cc-row {
+      flex-direction: column;
+    }
   }
 
   @keyframes cc-slide-in {
@@ -1150,6 +1186,7 @@ body {
     border-radius: 12px;
     padding: 12px;
     flex: 1;
+    min-width: 0;
   }
 
   /* Connectivity module */
@@ -1197,15 +1234,23 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1px;
+    min-width: 0;
+    overflow: hidden;
   }
   .cc-toggle-label {
     font-size: 12px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.85);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .cc-toggle-status {
     font-size: 10px;
     color: rgba(0, 0, 0, 0.45);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /* Focus module */

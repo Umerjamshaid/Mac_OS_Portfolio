@@ -34,26 +34,50 @@ const setupTextHover = (Container, type) => {
         });
     };
 
-    const handleMouseMove = (e) => {
+    // Cache letter centers once instead of re-measuring layout on every mousemove
+    let letterCenters = [];
+    const measure = () => {
         const { left } = Container.getBoundingClientRect();
-        const mouseX = e.clientX - left;
-
-        letters.forEach((letter) => {
+        letterCenters = Array.from(letters).map((letter) => {
             const { left: l, width: w } = letter.getBoundingClientRect();
-            const distance = Math.abs(mouseX - (l - left + w / 2));
-            const intensity = Math.exp(-(distance ** 2) / 20000);
+            return l - left + w / 2;
+        });
+    };
+    measure();
+    window.addEventListener("resize", measure, { passive: true });
 
+    // Throttle to one update per animation frame to avoid animation floods
+    let rafId = null;
+    let pendingX = null;
+
+    const apply = () => {
+        rafId = null;
+        if (pendingX == null) return;
+        const mouseX = pendingX;
+        letters.forEach((letter, i) => {
+            const distance = Math.abs(mouseX - letterCenters[i]);
+            const intensity = Math.exp(-(distance ** 2) / 20000);
             animateLetter(letter, min + (max - min) * intensity);
         });
     };
-    const handleMouseLeave = () =>
+
+    const handleMouseMove = (e) => {
+        const { left } = Container.getBoundingClientRect();
+        pendingX = e.clientX - left;
+        if (rafId == null) rafId = requestAnimationFrame(apply);
+    };
+    const handleMouseLeave = () => {
+        if (rafId != null) { cancelAnimationFrame(rafId); rafId = null; }
+        pendingX = null;
         letters.forEach((letter) => animateLetter(letter, base, 0.3));
-    {
-    }
-    Container.addEventListener("mousemove", handleMouseMove);
+    };
+
+    Container.addEventListener("mousemove", handleMouseMove, { passive: true });
     Container.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
+        window.removeEventListener("resize", measure);
+        if (rafId != null) cancelAnimationFrame(rafId);
         Container.removeEventListener("mousemove", handleMouseMove);
         Container.removeEventListener("mouseleave", handleMouseLeave);
     };
