@@ -1,7 +1,7 @@
 import { useCallback, useRef } from "react";
 import { Dock, Home, Navbar, Welcome, Wallpaper, DesktopContextMenu, Spotlight, LockScreen, SpotifyPlayer, Notifications, DesktopEffects, ControlCenter } from "#components"
 import { Draggable } from "gsap/all"
-import { Finder, Resume, Safari, Terminal, TextFile, ImageFile, Contact, Photos, Settings } from "#windows";
+import { Finder, Resume, Safari, Terminal, TextFile, ImageFile, Contact, Photos, Settings, MobileApps } from "#windows";
 import { gsap } from "gsap";
 
 gsap.registerPlugin(Draggable);
@@ -43,6 +43,7 @@ export const App = () => {
       <Contact />
       <Photos />
       <Settings />
+      <MobileApps />
 
       <Home />
 

@@ -3,7 +3,7 @@ import { WindowControls } from "#components";
 import { socials } from "#constants";
 import WindowWrapper from "#hoc/WindowWrapper";
 import {
-  Mail, PenLine, Link2, Send, Check,
+  Mail, PenLine, Link2, Send, Check, X,
   Inbox, Star, Archive, Trash2,
   User, AtSign, MessageSquare, Sparkles,
 } from "lucide-react";
@@ -115,6 +115,8 @@ const ComposeView = () => {
   const canvasRef = useRef(null);
 
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+  const clearField = (key) => () => setForm((f) => ({ ...f, [key]: "" }));
+  const clearAll = () => { setForm({ name: "", email: "", subject: "", message: "" }); setEggFired(false); };
 
   useEffect(() => {
     if (!eggFired && form.message.toLowerCase().includes("hire me")) {
@@ -159,14 +161,24 @@ const ComposeView = () => {
             Easter egg unlocked!
           </span>
         )}
+        {!eggFired && (form.name || form.email || form.subject || form.message) && (
+          <button
+            type="button"
+            onClick={clearAll}
+            className="ml-auto flex items-center gap-1 text-[10px] font-medium text-gray-400 hover:text-gray-600 focus:text-gray-600 focus:outline-none transition-colors"
+          >
+            <X size={10} />
+            Clear all
+          </button>
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
         {FIELDS.map(({ key, label, Icon, type, ph }) => (
-          <div key={key} className="flex items-center gap-3 px-5 py-2.5">
+          <div key={key} className="group flex items-center gap-3 px-5 py-2.5 focus-within:bg-blue-50/40 transition-colors">
             <div className="flex items-center gap-1.5 w-[72px] flex-shrink-0">
-              <Icon size={12} className="text-gray-300" />
-              <span className="text-xs text-gray-400">{label}</span>
+              <Icon size={12} className="text-gray-300 group-focus-within:text-blue-400 transition-colors" />
+              <span className="text-xs text-gray-400 group-focus-within:text-blue-500 transition-colors">{label}</span>
             </div>
             <input
               type={type}
@@ -175,9 +187,19 @@ const ComposeView = () => {
               placeholder={ph}
               className="flex-1 text-sm text-gray-700 placeholder:text-gray-300 outline-none bg-transparent py-0.5"
             />
+            {form[key] && (
+              <button
+                type="button"
+                onClick={clearField(key)}
+                aria-label={`Clear ${label}`}
+                className="flex-shrink-0 w-4 h-4 flex items-center justify-center rounded-full text-gray-300 hover:text-gray-600 hover:bg-gray-100 focus:text-gray-600 focus:bg-gray-100 focus:outline-none transition-colors opacity-0 group-hover:opacity-100 group-focus-within:opacity-100"
+              >
+                <X size={11} />
+              </button>
+            )}
           </div>
         ))}
-        <div className="px-5 pt-3 pb-2">
+        <div className="group px-5 pt-3 pb-2 focus-within:bg-blue-50/40 transition-colors">
           <textarea
             value={form.message}
             onChange={set("message")}
@@ -195,7 +217,7 @@ const ComposeView = () => {
         <button
           onClick={handleSend}
           disabled={phase === "sending" || !form.name || !form.email || !form.message}
-          className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-500 hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95"
+          className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-500 hover:bg-blue-600 focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:outline-none disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95"
         >
           {phase === "sending" ? (
             <><span className="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Sending</>
@@ -253,6 +275,32 @@ const SocialsView = () => (
   </div>
 );
 
+// ─── Empty folder view ──────────────────────────────────────────────
+const EMPTY_FOLDER_COPY = {
+  favourites: { title: "No favourites yet", body: "Star an email to keep it here." },
+  archive:    { title: "Archive is empty",  body: "Archived messages will show up here." },
+  trash:      { title: "Trash is empty",    body: "Deleted messages will show up here." },
+};
+
+const EmptyFolderView = ({ id, Icon }) => {
+  const copy = EMPTY_FOLDER_COPY[id];
+  return (
+    <div className="flex flex-col h-full">
+      <div className="flex items-center gap-2 px-5 py-3 border-b border-gray-100 bg-gray-50">
+        <Icon size={13} className="text-blue-400" />
+        <span className="text-xs font-semibold text-gray-500">{copy.title.split(" is")[0].split(" yet")[0]}</span>
+      </div>
+      <div className="flex-1 flex flex-col items-center justify-center gap-2 text-center px-8">
+        <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center">
+          <Icon size={20} className="text-gray-300" />
+        </div>
+        <p className="text-sm font-semibold text-gray-600">{copy.title}</p>
+        <p className="text-xs text-gray-400">{copy.body}</p>
+      </div>
+    </div>
+  );
+};
+
 // ─── Sidebar ──────────────────────────────────────────────────────
 const SIDEBAR_NAV = [
   { id: "inbox",   label: "Inbox",       Icon: Inbox,   count: 1 },
@@ -260,9 +308,9 @@ const SIDEBAR_NAV = [
   { id: "socials", label: "Links",       Icon: Link2,   count: 4 },
 ];
 const SIDEBAR_FOLDERS = [
-  { label: "Favourites", Icon: Star },
-  { label: "Archive",    Icon: Archive },
-  { label: "Trash",      Icon: Trash2 },
+  { id: "favourites", label: "Favourites", Icon: Star },
+  { id: "archive",    label: "Archive",    Icon: Archive },
+  { id: "trash",      label: "Trash",      Icon: Trash2 },
 ];
 
 // ─── Root component ───────────────────────────────────────────────
@@ -305,19 +353,26 @@ const Contact = () => {
 
           <div className="px-2 py-2 border-t border-gray-100/80">
             <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest px-2 mb-1.5">Folders</p>
-            {SIDEBAR_FOLDERS.map(({ label, Icon }) => (
-              <button key={label} disabled className="mail-sidebar-btn opacity-40 cursor-default">
-                <Icon size={14} className="text-gray-400" />
-                <span className="flex-1 text-left text-xs text-gray-500">{label}</span>
+            {SIDEBAR_FOLDERS.map(({ id, label, Icon }) => (
+              <button
+                key={id}
+                onClick={() => setView(id)}
+                className={`mail-sidebar-btn ${view === id ? "mail-sidebar-btn--active" : ""}`}
+              >
+                <Icon size={14} className={view === id ? "text-blue-500" : "text-gray-400"} />
+                <span className="flex-1 text-left text-xs">{label}</span>
               </button>
             ))}
           </div>
         </aside>
 
         <div className="flex-1 overflow-hidden flex flex-col">
-          {view === "inbox"   && <InboxView />}
-          {view === "compose" && <ComposeView />}
-          {view === "socials" && <SocialsView />}
+          {view === "inbox"      && <InboxView />}
+          {view === "compose"    && <ComposeView />}
+          {view === "socials"    && <SocialsView />}
+          {view === "favourites" && <EmptyFolderView id="favourites" Icon={Star} />}
+          {view === "archive"    && <EmptyFolderView id="archive" Icon={Archive} />}
+          {view === "trash"      && <EmptyFolderView id="trash" Icon={Trash2} />}
         </div>
       </div>
     </div>
