@@ -6,7 +6,8 @@ const WindowControls = ({ target }) => {
 
   return (
     <div id="window-controls">
-      <div
+      <button
+        type="button"
         className="close"
         role="button"
         tabIndex={0}
@@ -15,21 +16,25 @@ const WindowControls = ({ target }) => {
         onClick={() => closeWindow(target)}
         onKeyDown={(e) => e.key === "Enter" && closeWindow(target)}
       />
-      <div
+      <button
+        type="button"
         className="minimize"
         role="button"
         tabIndex={0}
         title="Minimize"
+        title="Minimise"
         aria-label="Minimize window"
         onClick={() => minimizeWindow(target)}
         onKeyDown={(e) => e.key === "Enter" && minimizeWindow(target)}
       />
-      <div
+      <button
+        type="button"
         className={`maximize${isFullscreen ? " maximize-active" : ""}`}
         role="button"
         tabIndex={0}
         title={isFullscreen ? "Exit Full Screen" : "Full Screen"}
         aria-label={isFullscreen ? "Exit full screen" : "Enter full screen"}
+        aria-pressed={isFullscreen}
         onClick={() => toggleFullscreen(target)}
         onKeyDown={(e) => e.key === "Enter" && toggleFullscreen(target)}
       />

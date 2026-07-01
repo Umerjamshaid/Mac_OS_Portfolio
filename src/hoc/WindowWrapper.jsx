@@ -32,9 +32,16 @@ const WindowWrapper = (Component, windowKey) => {
 
       if (isFirstRender.current) {
         isFirstRender.current = false;
-        el.style.display = "none";
-        prevIsOpen.current = false;
-        prevIsMin.current  = false;
+        // Check persisted state on first render
+        if (windows[windowKey].isOpen && !windows[windowKey].isMinimized) {
+          el.style.display = "block";
+          prevIsOpen.current = true;
+          prevIsMin.current = windows[windowKey].isMinimized;
+        } else {
+          el.style.display = "none";
+          prevIsOpen.current = windows[windowKey].isOpen;
+          prevIsMin.current = windows[windowKey].isMinimized;
+        }
         return;
       }
 

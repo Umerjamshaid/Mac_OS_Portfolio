@@ -3,6 +3,8 @@ import { Search, X } from "lucide-react";
 import useWindowStore from "#store/window";
 import useDesktopStore from "#store/desktop";
 
+// Check if desktop is locked
+
 const base = import.meta.env.BASE_URL;
 
 const SPOTLIGHT_ITEMS = [
@@ -29,10 +31,10 @@ const SPOTLIGHT_ITEMS = [
 
 const Spotlight = () => {
   const { isSpotlightOpen, openSpotlight, closeSpotlight } = useDesktopStore();
+  const { isLocked, openWindow } = useWindowStore();
   const [query, setQuery] = useState("");
   const [cursor, setCursor] = useState(0);
   const inputRef = useRef(null);
-  const { openWindow } = useWindowStore();
 
   const filteredGroups = (() => {
     if (!query.trim()) return SPOTLIGHT_ITEMS;
@@ -67,6 +69,9 @@ const Spotlight = () => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      // Don't allow spotlight when desktop is locked
+      if (isLocked) return;
+
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         if (isSpotlightOpen) handleClose();
@@ -84,7 +89,7 @@ const Spotlight = () => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isSpotlightOpen, cursor, flatFiltered, openSpotlight, handleClose, handleSelect]);
+  }, [isLocked, isSpotlightOpen, cursor, flatFiltered, openSpotlight, handleClose, handleSelect]);
 
   useEffect(() => {
     if (isSpotlightOpen) setTimeout(() => inputRef.current?.focus(), 20);

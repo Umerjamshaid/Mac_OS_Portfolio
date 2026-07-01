@@ -5,11 +5,14 @@ import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
 export default defineConfig({
+  base: '/Mac_OS_Portfolio/',
   plugins: [react(), tailwindcss()],
   server: {
     host: '0.0.0.0',
     port: 5000,
-    allowedHosts: true,
+    allowedHosts: process.env.DEV_ALLOWED_HOSTS 
+      ? process.env.DEV_ALLOWED_HOSTS.split(',').map(h => h.trim())
+      : ['localhost'],
   },
   resolve: {
     alias: {

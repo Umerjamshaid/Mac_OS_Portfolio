@@ -135,6 +135,13 @@ const Notification = ({ Icon, app, title, body, timestamp, onDismiss, isStacked,
           <p className="macos-notification-title">{title}</p>
           <p className="macos-notification-body">{body}</p>
         </div>
+        <button 
+          onClick={dismiss} 
+          className="text-gray-300 hover:text-gray-500 transition-colors mt-0.5 flex-shrink-0"
+          aria-label="Dismiss notification"
+        >
+          <X size={12} />
+        </button>
       </div>
 
       {/* Stacked indicator badge (shows count when collapsed) */}
