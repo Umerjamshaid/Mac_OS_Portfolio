@@ -8,13 +8,14 @@ import WifiPopup from "./WifiPopup"
 const ICON_LABELS = {
   1: "Wi-Fi",
   2: "Spotlight",
-  3: "Profile",
-  4: "Appearance",
+  3: "Control Center",
+  4: "Profile",
+  5: "Appearance",
 };
 
 const Navbar = () => {
   const { openWindow } = useWindowStore();
-  const { toggleSpotlight, activeWallpaperId, setWallpaper } = useDesktopStore();
+  const { toggleSpotlight, activeWallpaperId, setWallpaper, toggleControlCenter, isFocusModeEnabled } = useDesktopStore();
   const [time, setTime]       = useState(dayjs());
   const [wifiOpen, setWifiOpen] = useState(false);
   const [tooltip, setTooltip]  = useState(null); // { id, label }
@@ -28,8 +29,9 @@ const Navbar = () => {
   const handleIconClick = (id) => {
     if (id === 1) { setWifiOpen((v) => !v); return; }
     if (id === 2) { toggleSpotlight(); return; }
-    if (id === 3) { openWindow("settings"); return; }
-    if (id === 4) {
+    if (id === 3) { toggleControlCenter(); return; }
+    if (id === 4) { openWindow("settings"); return; }
+    if (id === 5) {
       // Toggle dark / light appearance — switch between light (id 1) and dark (id 2)
       const lightIds = [1, 5];
       const isDark = !lightIds.includes(activeWallpaperId);

@@ -78,7 +78,7 @@ const AchievementToast = ({ onDone }) => {
   return (
     <div
       className="achievement-toast"
-      style={{ opacity: vis ? 1 : 0, transform: vis ? "translateY(0)" : "translateY(20px)" }}
+      style={{ opacity: vis ? 1 : 0, transform: vis ? "translateX(-50%) translateY(0)" : "translateX(-50%) translateY(20px)" }}
     >
       <div className="w-10 h-10 rounded-xl bg-yellow-400 flex items-center justify-center flex-shrink-0">
         <Trophy size={20} className="text-white" />

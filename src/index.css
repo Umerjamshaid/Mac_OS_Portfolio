@@ -619,6 +619,12 @@ body {
   #window-controls .close:hover    { filter: brightness(0.8); }
   #window-controls .minimize:hover { filter: brightness(0.8); }
   #window-controls .maximize:hover { filter: brightness(0.8); }
+  #window-controls .close:focus-visible,
+  #window-controls .minimize:focus-visible,
+  #window-controls .maximize:focus-visible {
+    outline: 2px solid rgba(0, 122, 255, 0.6);
+    outline-offset: 2px;
+  }
   #window-controls .maximize-active {
     @apply bg-[#2acb42];
     box-shadow: 0 0 0 3px rgba(42, 203, 66, 0.35);
@@ -861,35 +867,204 @@ body {
     to   { opacity: 1; transform: translateX(-50%) translateY(0); }
   }
 
-  /* ─── System Notifications ─── */
-  .notification-stack {
+  /* ─── macOS Native Notifications ─── */
+  .macos-notification-stack {
     position: fixed;
-    top: 38px;
-    right: 12px;
+    top: 36px;
+    right: 8px;
     z-index: 9985;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    pointer-events: none;
+    align-items: flex-end;
+    gap: 0;
+    pointer-events: auto;
   }
 
-  .notification-toast {
-    pointer-events: all;
-    width: 320px;
+  .macos-notification-clear-all {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: none;
+    border-radius: 6px;
+    padding: 4px 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    animation: macos-fade-in 0.2s ease;
+  }
+  .macos-notification-clear-all:hover {
+    background: rgba(255, 255, 255, 0.9);
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .macos-notification-list {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .macos-notification-list.collapsed {
+    gap: 0;
+  }
+  .macos-notification-list.expanded {
+    gap: 10px;
+  }
+
+  .macos-notification {
+    position: relative;
+    width: 348px;
     padding: 12px 14px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(28px) saturate(200%);
-    -webkit-backdrop-filter: blur(28px) saturate(200%);
-    border: 0.5px solid rgba(0, 0, 0, 0.10);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 1px 0 rgba(255,255,255,0.8) inset;
-    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+    border-radius: 18px;
+    background: rgba(250, 250, 250, 0.82);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 0.5px solid rgba(255, 255, 255, 0.7);
+    box-shadow:
+      0 0 0 0.5px rgba(0, 0, 0, 0.06),
+      0 4px 12px rgba(0, 0, 0, 0.08),
+      0 12px 28px rgba(0, 0, 0, 0.12),
+      inset 0 0.5px 0 rgba(255, 255, 255, 0.9);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    pointer-events: auto;
+    cursor: grab;
+    user-select: none;
+  }
+  .macos-notification.dragging {
+    cursor: grabbing;
   }
 
-  .notification-icon-wrap {
-    @apply w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0;
-    background: linear-gradient(135deg, #4f8ef7, #3b5de7);
-    box-shadow: 0 4px 12px rgba(79, 142, 247, 0.4);
+  .macos-notification-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* App icon - macOS style rounded square */
+  .macos-notification-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: linear-gradient(180deg, #5ca5f7 0%, #2e80f6 100%);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    color: white;
+  }
+
+  .macos-notification-text {
+    flex: 1;
+    min-width: 0;
+    padding-right: 8px;
+  }
+
+  .macos-notification-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2px;
+  }
+
+  .macos-notification-app {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
+    letter-spacing: -0.01em;
+  }
+
+  .macos-notification-time {
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+  .macos-notification-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 1.3;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .macos-notification-body {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.55);
+    line-height: 1.35;
+    margin: 2px 0 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Close button - macOS style (hidden until hover) */
+  .macos-notification-close {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(142, 142, 147, 0.95);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.15s ease, transform 0.15s ease, background 0.1s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+  }
+  .macos-notification:hover .macos-notification-close {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .macos-notification-close:hover {
+    background: rgba(120, 120, 125, 1);
+  }
+  .macos-notification-close:active {
+    background: rgba(100, 100, 105, 1);
+    transform: scale(0.95);
+  }
+
+  /* Stacked notification badge */
+  .macos-notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background: rgba(142, 142, 147, 0.95);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    animation: macos-badge-pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes macos-badge-pop {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes macos-fade-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   /* ─── Desktop Click Ripple ─── */
@@ -915,7 +1090,6 @@ body {
     position: fixed;
     bottom: 88px;
     left: 50%;
-    transform: translateX(-50%) translateY(20px);
     display: flex;
     align-items: center;
     gap: 14px;
@@ -929,5 +1103,298 @@ body {
     z-index: 9990;
     transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
     width: 320px;
+  }
+
+  /* ─── macOS Control Center ─── */
+  .control-center-panel {
+    position: fixed;
+    top: 36px;
+    right: 90px;
+    width: 320px;
+    padding: 14px;
+    border-radius: 14px;
+    background: rgba(245, 245, 247, 0.75);
+    backdrop-filter: blur(50px) saturate(180%);
+    -webkit-backdrop-filter: blur(50px) saturate(180%);
+    border: 0.5px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+      0 0 0 0.5px rgba(0, 0, 0, 0.08),
+      0 8px 32px rgba(0, 0, 0, 0.18),
+      0 24px 60px rgba(0, 0, 0, 0.15);
+    z-index: 9980;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    animation: cc-slide-in 0.2s ease-out;
+  }
+
+  @keyframes cc-slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .cc-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .cc-module {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    padding: 12px;
+    flex: 1;
+  }
+
+  /* Connectivity module */
+  .cc-connectivity {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px;
+  }
+
+  .cc-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    width: 100%;
+    text-align: left;
+  }
+  .cc-toggle-btn:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .cc-toggle-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease;
+  }
+  .cc-toggle-btn.active .cc-toggle-icon {
+    background: #007aff;
+    color: white;
+  }
+
+  .cc-toggle-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .cc-toggle-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
+  }
+  .cc-toggle-status {
+    font-size: 10px;
+    color: rgba(0, 0, 0, 0.45);
+  }
+
+  /* Focus module */
+  .cc-focus {
+    display: flex;
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .cc-focus-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 16px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    position: relative;
+  }
+  .cc-focus-btn:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+  .cc-focus-btn.active {
+    background: rgba(138, 99, 210, 0.15);
+  }
+
+  .cc-focus-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease;
+  }
+  .cc-focus-btn.active .cc-focus-icon {
+    background: linear-gradient(135deg, #8a63d2 0%, #6a4fb8 100%);
+    color: white;
+  }
+
+  .cc-focus-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
+  }
+  .cc-focus-status {
+    font-size: 10px;
+    color: rgba(0, 0, 0, 0.45);
+  }
+  .cc-focus-btn.active .cc-focus-status {
+    color: #8a63d2;
+  }
+
+  .cc-focus-active-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #8a63d2;
+  }
+
+  /* Display & Sound modules */
+  .cc-display,
+  .cc-sound {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cc-module-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .cc-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cc-slider-icon {
+    color: rgba(0, 0, 0, 0.4);
+    flex-shrink: 0;
+  }
+
+  .cc-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.1);
+    outline: none;
+    cursor: pointer;
+  }
+  .cc-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+  .cc-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+  }
+
+  .cc-dark-mode-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px;
+    border: none;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.7);
+    transition: all 0.15s ease;
+  }
+  .cc-dark-mode-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  .cc-dark-mode-btn.active {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+  }
+
+  /* Now Playing */
+  .cc-now-playing {
+    padding: 10px 12px;
+  }
+
+  .cc-now-playing-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cc-now-playing-art {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  .cc-now-playing-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cc-now-playing-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  .cc-now-playing-artist {
+    font-size: 11px;
+    color: rgba(0, 0, 0, 0.45);
+  }
+
+  .cc-now-playing-chevron {
+    color: rgba(0, 0, 0, 0.3);
   }
 }

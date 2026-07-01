@@ -51,7 +51,7 @@ const getPhotosForSection = (section) => {
   return PHOTOS.filter((p) => p.album === section);
 };
 
-const Lightbox = ({ photo, photos, onClose, onPrev, onNext }) => {
+const Lightbox = ({ photo, photos, onClose, onPrev, onNext, onGoTo }) => {
   const idx = photos.findIndex((p) => p.id === photo.id);
   return (
     <div className="absolute inset-0 z-50 bg-black/95 flex flex-col" onClick={onClose}>
@@ -99,6 +99,7 @@ const Lightbox = ({ photo, photos, onClose, onPrev, onNext }) => {
         {photos.map((p, i) => (
           <button
             key={p.id}
+            onClick={() => onGoTo(i)}
             onClick={() => {
               // Jump directly to clicked thumbnail
               const delta = i - idx;
@@ -214,6 +215,11 @@ const Photos = () => {
     if (idx > 0) setLightboxPhoto(sectionPhotos[idx - 1]);
   }, [lightboxPhoto, sectionPhotos]);
 
+  const handleGoTo = useCallback((index) => {
+    if (!sectionPhotos || index < 0 || index >= sectionPhotos.length) return;
+    setLightboxPhoto(sectionPhotos[index]);
+  }, [sectionPhotos]);
+
   return (
     <div className="relative flex flex-col h-full overflow-hidden bg-white">
       <div id="window-header" className="flex-shrink-0">
@@ -296,6 +302,7 @@ const Photos = () => {
           onClose={() => setLightboxPhoto(null)}
           onNext={handleNext}
           onPrev={handlePrev}
+          onGoTo={handleGoTo}
         />
       )}
     </div>
