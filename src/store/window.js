@@ -4,7 +4,7 @@ import { immer } from "zustand/middleware/immer";
 
 const useWindowStore = create(
   immer((set) => ({
-    isLocked: true,
+    isLocked: false,
 
     windows: Object.fromEntries(
       Object.entries(WINDOW_CONFIG).map(([key, val]) => [
