@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="32" viewBox="0 0 160 32" fill="none" aria-hidden="true">
+  <rect width="160" height="32" rx="8" fill="#111827" />
+  <g transform="translate(10,8)" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="12">
+    <!-- simple GitHub mark (circle) -->
+    <circle cx="6" cy="8" r="6" fill="#FFFFFF" opacity="0.06" />
+  </g>
+  <text x="28" y="20" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="12">View on GitHub</text>
+</svg>

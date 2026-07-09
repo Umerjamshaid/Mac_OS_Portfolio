@@ -1517,6 +1517,8 @@ body {
 
   .cc-slider {
     flex: 1;
+    width: 100%;
+    min-width: 0;
     -webkit-appearance: none;
     appearance: none;
     height: 6px;
@@ -1614,5 +1616,14 @@ body {
   .cc-now-playing-chevron {
     color: rgba(0, 0, 0, 0.3);
     flex-shrink: 0;
+  }
+
+  /* ─── Scrollbar Hide Utility ─── */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 }

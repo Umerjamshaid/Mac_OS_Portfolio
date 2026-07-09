@@ -75,7 +75,7 @@ const dockApps = [
   {
     id: "mobileapps",
     name: "Mobile Projects",
-    icon: "mobile-apps.svg",
+    icon: "icons8-flutter-logo-48.png",
     canOpen: true,
   },
   {
@@ -223,6 +223,38 @@ const gallery = [
 
 const MOBILE_APPS = [
   {
+    id: "attendance-app",
+    name: "Attendance App",
+    tagline: "Smart attendance tracking made simple and automated",
+    status: "Completed",
+    stack: ["Flutter", "Dart", "Firebase", "State Management"],
+    description: [
+      "An elegant attendance tracking solution designed for modern organizations and academic institutions.",
+      "Features seamless check-ins, automated logging, and simple report generation for administrators.",
+      "Built with a responsive Flutter interface that handles offline synchronization and secure authentication."
+    ],
+    screenshot: `${base}Attendance.png`,
+    appStore: null,
+    playStore: null,
+    githubUrl: "https://github.com/Umerjamshaid",
+  },
+  {
+    id: "attendance-profile",
+    name: "Attendance Log",
+    tagline: "Detailed attendance statistics and history visualization",
+    status: "Completed",
+    stack: ["Flutter", "Dart", "Charts", "UI Design"],
+    description: [
+      "A companion analytics app for visualizing attendance patterns and exporting comprehensive records.",
+      "Includes visual charts, filtering options, and real-time history logs with beautiful animations.",
+      "Optimized for fast querying and clean representation of complex user check-in data."
+    ],
+    screenshot: `${base}Attendance-profile.png`,
+    appStore: null,
+    playStore: null,
+    githubUrl: "https://github.com/Umerjamshaid",
+  },
+  {
     id: "baby-shop-hub",
     name: "Baby Shop Hub",
     tagline: "Mobile e-commerce for parents on the go",
@@ -231,10 +263,12 @@ const MOBILE_APPS = [
     description: [
       "Baby Shop Hub is a full-featured mobile e-commerce app designed for parents shopping for baby products.",
       "Instead of browsing scattered websites, parents get a clean, curated experience with product categories, a smart cart, and secure checkout.",
-      "Built with Flutter and Dart, the app runs natively on both iOS and Android with smooth 60fps animations and a warm, friendly UI.",
+      "Built with Flutter and Dart, the app runs natively on both iOS and Android with smooth 60fps animations and a warm, friendly UI."
     ],
     screenshot: `${base}images/gal1.png`,
-    githubUrl: "https://github.com/Umerjamshaid/Mac_OS_Portfolio",
+    appStore: null,
+    playStore: null,
+    githubUrl: "https://github.com/Umerjamshaid",
   },
   {
     id: "food-delivery-app",
@@ -245,10 +279,12 @@ const MOBILE_APPS = [
     description: [
       "A fast and convenient way to order meals from your favorite restaurants — browse menus, customize orders, and track deliveries in real time.",
       "Think of it like having your favorite restaurants in your pocket, ready to deliver anytime, anywhere.",
-      "Built with a clean, modern Flutter UI that stays smooth and responsive across devices.",
+      "Built with a clean, modern Flutter UI that stays smooth and responsive across devices."
     ],
     screenshot: `${base}images/project-3.png`,
-    githubUrl: "https://github.com/Umerjamshaid/Mac_OS_Portfolio",
+    appStore: null,
+    playStore: null,
+    githubUrl: "https://github.com/Umerjamshaid",
   },
 ];
 

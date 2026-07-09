@@ -99,8 +99,8 @@ const Lightbox = ({ photo, photos, onClose, onPrev, onNext, onGoTo }) => {
         {photos.map((p, i) => (
           <button
             key={p.id}
-            onClick={() => onGoTo(i)}
             onClick={() => {
+              onGoTo(i);
               // Jump directly to clicked thumbnail
               const delta = i - idx;
               if (delta > 0) {

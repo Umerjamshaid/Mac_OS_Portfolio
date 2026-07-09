@@ -1,96 +1,80 @@
 import { useState } from "react";
 import { WindowControls } from "#components";
-import { MOBILE_APPS } from "#constants";
 import WindowWrapper from "#hoc/WindowWrapper";
-import { Smartphone, Github, CheckCircle2 } from "lucide-react";
+import { appsData, packagesData, otherData, TABS } from "../constants/data";
+import AppCard from "../components/AppCard";
+import ProjectCard from "../components/ProjectCard";
+
+const WindowHeader = () => (
+  <div className="flex items-center gap-3 px-4 py-2.5 bg-white/50 backdrop-blur-md border-b border-gray-200/80 flex-shrink-0">
+    <WindowControls target="mobileapps" />
+    <div className="flex-1 text-center">
+      <span className="text-xs font-semibold text-gray-600">Mobile Projects</span>
+    </div>
+  </div>
+);
+
+const TabBar = ({ activeTab, onTabChange }) => (
+  <div className="flex justify-center w-full pt-4 pb-4 flex-shrink-0">
+    <div role="tablist" className="flex gap-1 bg-gray-100/80 backdrop-blur-md p-1 rounded-xl border border-black/5 shadow-sm">
+      {TABS.map((tab) => (
+        <button
+          key={tab}
+          role="tab"
+          aria-selected={activeTab === tab}
+          onClick={() => onTabChange(tab)}
+          className={`relative px-6 py-1.5 text-sm font-medium rounded-lg transition-all duration-300 ease-out ${
+            activeTab === tab
+              ? "bg-white text-gray-900 shadow-sm"
+              : "text-gray-500 hover:text-gray-800"
+          }`}
+        >
+          {tab}
+        </button>
+      ))}
+    </div>
+  </div>
+);
 
 const MobileApps = () => {
-  const [activeId, setActiveId] = useState(MOBILE_APPS[0]?.id);
-  const app = MOBILE_APPS.find((a) => a.id === activeId) ?? MOBILE_APPS[0];
+  const [activeTab, setActiveTab] = useState("Apps");
 
   return (
-    <div id="mobileapps">
-      <div id="window-header">
-        <WindowControls target="mobileapps" />
-        <div className="flex items-center gap-2 mx-auto text-sm font-semibold text-gray-600 select-none">
-          <Smartphone size={14} className="text-gray-400" />
-          <span>Mobile Projects</span>
-        </div>
-      </div>
+    <div className="flex h-full flex-col bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 select-none">
+      <WindowHeader />
+      <main className="flex-1 flex flex-col overflow-hidden">
+        <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <div className="flex h-[calc(100%-41px)] min-w-0">
-        <nav className="ma-sidebar p-2">
-          <p className="px-3 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wide text-gray-400">
-            Flutter Apps
-          </p>
-          {MOBILE_APPS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`ma-sidebar-item${item.id === activeId ? " ma-sidebar-item--active" : ""}`}
-              onClick={() => setActiveId(item.id)}
-            >
-              <Smartphone size={15} className="text-gray-400 flex-shrink-0" />
-              <span className="text-sm text-gray-700 truncate">{item.name}</span>
-            </button>
-          ))}
-        </nav>
+        <div className="flex-grow overflow-hidden min-h-0 relative flex flex-col">
+          {activeTab === "Apps" && (
+            <div className="flex-1 flex items-center justify-start overflow-x-auto gap-6 px-8 py-4 scrollbar-hide snap-x">
+              {appsData.map((app) => (
+                <AppCard key={app.id} app={app} />
+              ))}
+            </div>
+          )}
 
-        <div className="ma-detail p-6">
-          {app && (
-            <div className="ma-split">
-              <div className="ma-info-col flex flex-col gap-3">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="ma-status-chip">
-                    <CheckCircle2 size={12} />
-                    {app.status}
-                  </span>
-                </div>
-
-                <h2 className="text-xl font-bold text-gray-800 leading-tight break-words">
-                  {app.name}
-                </h2>
-                <p className="text-sm text-gray-500 break-words">{app.tagline}</p>
-
-                <div className="flex flex-wrap gap-1.5 mt-1">
-                  {app.stack.map((tag) => (
-                    <span key={tag} className="ma-chip">{tag}</span>
-                  ))}
-                </div>
-
-                <div className="flex flex-col gap-2 mt-2 text-sm text-gray-600 leading-relaxed">
-                  {app.description.map((para, i) => (
-                    <p key={i} className="break-words">{para}</p>
-                  ))}
-                </div>
-
-                <a
-                  href={app.githubUrl}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="ma-github-badge mt-3 w-fit"
-                >
-                  <Github size={15} className="flex-shrink-0" />
-                  <span>View on GitHub</span>
-                </a>
+          {activeTab === "Packages" && (
+            <div className="flex-1 overflow-y-auto p-6 min-h-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {packagesData.map((pkg) => (
+                  <ProjectCard key={pkg.id} item={pkg} />
+                ))}
               </div>
+            </div>
+          )}
 
-              <div className="ma-phone-col">
-                <div className="ma-phone-frame">
-                  <div className="ma-phone-notch" />
-                  <div className="ma-phone-screen">
-                    <img
-                      src={app.screenshot}
-                      alt={`${app.name} screenshot`}
-                      draggable={false}
-                    />
-                  </div>
-                </div>
+          {activeTab === "Other" && (
+            <div className="flex-1 overflow-y-auto p-6 min-h-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {otherData.map((item) => (
+                  <ProjectCard key={item.id} item={item} />
+                ))}
               </div>
             </div>
           )}
         </div>
-      </div>
+      </main>
     </div>
   );
 };

@@ -22,7 +22,6 @@ const WindowControls = ({ target }) => {
         role="button"
         tabIndex={0}
         title="Minimize"
-        title="Minimise"
         aria-label="Minimize window"
         onClick={() => minimizeWindow(target)}
         onKeyDown={(e) => e.key === "Enter" && minimizeWindow(target)}
