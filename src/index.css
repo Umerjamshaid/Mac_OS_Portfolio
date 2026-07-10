@@ -320,16 +320,202 @@ body {
   /* ── Mobile Projects window ── */
   #mobileapps {
     @apply absolute bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
-    width: 760px;
-    height: 560px;
+    width: 920px;
+    height: 580px;
     max-width: calc(100vw - 24px);
     max-height: calc(100vh - 24px);
     top: 8vh;
-    left: 18%;
+    left: 16%;
 
     #window-header {
       @apply flex items-center gap-3 px-4 py-2.5 bg-gray-50 border-b border-gray-200 select-none flex-shrink-0;
     }
+  }
+
+  .ma-window {
+    @apply flex h-full flex-col bg-[#f5f5f7] select-none overflow-hidden;
+  }
+
+  .ma-header-badge {
+    @apply w-16 flex justify-end items-center;
+  }
+
+  .ma-header-badge img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    opacity: 0.7;
+  }
+
+  .ma-toolbar {
+    @apply flex items-center justify-between px-4 py-2.5 flex-shrink-0;
+    background: rgba(255, 255, 255, 0.85);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .ma-toolbar__meta {
+    @apply text-[11px] text-gray-400 font-medium;
+  }
+
+  .ma-segmented {
+    display: inline-flex;
+    padding: 2px;
+    border-radius: 7px;
+    background: rgba(0, 0, 0, 0.06);
+    border: 0.5px solid rgba(0, 0, 0, 0.04);
+  }
+
+  .ma-segmented__btn {
+    @apply px-4 py-1 text-xs font-medium text-gray-500 transition-all duration-150 cursor-pointer;
+    background: transparent;
+    border: none;
+    border-radius: 5px;
+    min-width: 72px;
+  }
+
+  .ma-segmented__btn:hover {
+    @apply text-gray-700;
+  }
+
+  .ma-segmented__btn--active {
+    @apply text-gray-800;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 0.5px rgba(0, 0, 0, 0.04);
+  }
+
+  .ma-window__body {
+    @apply flex-1 overflow-hidden min-h-0;
+  }
+
+  .ma-apps-row {
+    @apply flex items-start justify-center overflow-x-auto gap-6 px-6 py-6 h-full;
+    scroll-snap-type: x mandatory;
+  }
+
+  .ma-app-card {
+    @apply flex flex-col items-center flex-shrink-0;
+    width: 170px;
+    scroll-snap-align: center;
+  }
+
+  .ma-app-card__preview {
+    @apply transition-transform duration-200;
+  }
+
+  .ma-app-card:hover .ma-app-card__preview {
+    transform: translateY(-3px);
+  }
+
+  .ma-app-card__screenshot {
+    width: 170px;
+    height: auto;
+    max-height: 368px;
+    object-fit: contain;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.12));
+  }
+
+  .ma-app-card__title {
+    @apply mt-3 text-[13px] font-semibold text-gray-800 text-center leading-tight;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  }
+
+  .ma-app-card__tags {
+    @apply flex flex-wrap justify-center gap-1 mt-1.5;
+    min-height: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.25s ease, margin 0.25s ease;
+  }
+
+  .ma-app-card__tags--visible {
+    max-height: 48px;
+    opacity: 1;
+    margin-top: 6px;
+  }
+
+  .ma-app-card__tag {
+    @apply text-[9px] font-medium px-1.5 py-0.5 rounded-md;
+    background: rgba(0, 0, 0, 0.06);
+    color: rgba(0, 0, 0, 0.55);
+    white-space: nowrap;
+  }
+
+  .ma-app-card__stores {
+    @apply flex gap-1.5 mt-2.5;
+  }
+
+  .ma-store-badge {
+    @apply block transition-transform duration-200;
+    width: 78px;
+    flex-shrink: 0;
+  }
+
+  .ma-store-badge:hover {
+    transform: scale(1.04);
+  }
+
+  .ma-store-badge img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 5px;
+  }
+
+  .ma-store-badge--disabled {
+    @apply flex items-center justify-center;
+    width: 78px;
+    height: 24px;
+    border: 1px solid #e5e7eb;
+    border-radius: 5px;
+    background: #f9fafb;
+    cursor: default;
+  }
+
+  .ma-store-badge__unavailable {
+    @apply text-[7px] text-gray-400 font-medium text-center leading-tight px-1;
+  }
+
+  .ma-app-card__github {
+    @apply mt-2 transition-all duration-300;
+    width: 100px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  .ma-app-card__github--hover {
+    opacity: 1;
+    max-height: 30px;
+    margin-top: 8px;
+  }
+
+  .ma-app-card__github:hover {
+    transform: scale(1.04);
+  }
+
+  .ma-app-card__github img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+  }
+
+  .ma-grid-scroll {
+    @apply flex-1 overflow-y-auto p-6 min-h-0 bg-white;
+  }
+
+  .ma-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
   }
 
   .ma-sidebar {
