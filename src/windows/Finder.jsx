@@ -40,11 +40,6 @@ const Finder = () => {
     if (item.fileType === "pdf") return openWindow("resume");
     if (item.kind === "folder") return setActiveLocation(item);
     if (['fig', 'url'].includes(item.fileType) && item.href) return window.open(item.href, "_blank");
-    if (item.fileType === "img") {
-      const siblings = (activeLocation?.children ?? []).filter((c) => c.fileType === "img");
-      const siblingIndex = siblings.findIndex((c) => c.id === item.id);
-      return openWindow("imgfile", { ...item, siblings, siblingIndex });
-    }
     openWindow(`${item.fileType}${item.kind}`, item);
   };
 
@@ -91,13 +86,7 @@ const Finder = () => {
               className={clsx("finder-item", item.position)}
               data-item-id={item.id}
             >
-              {item.fileType === "img" && item.imageUrl ? (
-                <div className="finder-img-thumb">
-                  <img src={item.imageUrl} alt={item.name} />
-                </div>
-              ) : (
-                <img src={item.icon} alt={item.name} />
-              )}
+              <img src={item.icon} alt={item.name} />
               <p>{item.name}</p>
             </li>
           ))}
