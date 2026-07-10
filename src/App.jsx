@@ -1,13 +1,26 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { Dock, Home, Navbar, Welcome, Wallpaper, DesktopContextMenu, Spotlight, LockScreen, SpotifyPlayer, Notifications, DesktopEffects, ControlCenter } from "#components"
 import { Draggable } from "gsap/all"
 import { Finder, Resume, Safari, Terminal, TextFile, ImageFile, Contact, Photos, Settings, MobileApps } from "#windows";
+import AdminPanel from "#windows/AdminPanel.jsx";
 import { gsap } from "gsap";
 
 gsap.registerPlugin(Draggable);
 
 export const App = () => {
   const addRippleRef = useRef(null);
+  const [showAdmin, setShowAdmin] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "a") {
+        e.preventDefault();
+        setShowAdmin((v) => !v);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   // Wire desktop clicks → ripple effect via DesktopEffects
   const registerRipple = useCallback((fn) => { addRippleRef.current = fn; }, []);
@@ -52,6 +65,7 @@ export const App = () => {
       <ControlCenter />
       <DesktopEffects onDesktopClick={registerRipple} />
       <LockScreen />
+      {showAdmin && <AdminPanel onClose={() => setShowAdmin(false)} />}
     </main>
   );
 };

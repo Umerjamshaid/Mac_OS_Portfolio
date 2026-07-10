@@ -3,6 +3,7 @@ import { locations } from "#constants";
 import WindowWrapper from "#hoc/WindowWrapper";
 import useLocationStore from "#store/location";
 import useWindowStore from "#store/window";
+import useAdminStore from "#store/adminData";
 import clsx from "clsx";
 import { Search } from "lucide-react";
 import { useRef } from "react";
@@ -37,14 +38,10 @@ const Finder = () => {
   );
 
   const openItem = (item) => {
-    // Handle PDF item opening etc.
     if (item.fileType === "pdf") return openWindow("resume");
     if (item.kind === "folder") return setActiveLocation(item);
-    if(['fig' , 'url' ].includes(item.fileType) && item.href) return window.open(item.href, "_blank");
-
-
+    if (['fig', 'url'].includes(item.fileType) && item.href) return window.open(item.href, "_blank");
     openWindow(`${item.fileType}${item.kind}`, item);
-
   };
 
   useGSAP(() => {
